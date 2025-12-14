@@ -8,21 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ADMIN STÍLUSOK (A RÉSZLETES NAPLÓ FEJLÉCE VISSZAÁLLÍTVA AZ EREDETIRE) */
+        /* ADMIN STÍLUSOK */
         :root {
-            --color-primary: #1e7e34; 
-            --color-background: #f8f9fa; 
+            --color-primary: #1e7e34;
+            --color-background: #f8f9fa;
             --color-white: #ffffff;
             --color-text-dark: #212529;
             --color-error: #dc3545;
-            --color-success: #4caf50; 
+            --color-success: #4caf50;
             --color-primary-light: #4caf50;
         }
 
-        body { 
-            font-family: 'Roboto', sans-serif; 
-            margin: 0; 
-            padding: 40px; 
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 40px;
             background-color: var(--color-background);
             color: var(--color-text-dark);
         }
@@ -34,7 +34,7 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            position: relative; 
+            position: relative;
         }
 
         h1 {
@@ -42,26 +42,26 @@
             font-weight: 500;
             border-bottom: 2px solid #e9ecef;
             padding-bottom: 10px;
-            margin-top: 0; 
-            margin-bottom: 25px; 
+            margin-top: 0;
+            margin-bottom: 25px;
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between;
             align-items: center;
         }
 
         /* Szűrési vezérlő stílusa */
         .filter-control {
-            margin-top: 15px; 
+            margin-top: 15px;
             margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #dee2e6;
             border-radius: 8px;
             background-color: #fcfcfc;
-            display: flex; 
-            gap: 20px; 
-            flex-wrap: wrap; 
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
-        
+
         .filter-group {
             flex: 1;
             min-width: 200px;
@@ -74,7 +74,7 @@
             margin-bottom: 5px;
             color: var(--color-primary);
         }
-        
+
         .filter-control select, .filter-control input[type="date"] {
             padding: 10px;
             width: 100%;
@@ -84,7 +84,7 @@
             background-color: var(--color-white);
             box-sizing: border-box;
         }
-        
+
         /* CÍM ÉS EXPORT GOMB TÁROLÓ */
         .log-header {
             display: flex;
@@ -97,7 +97,7 @@
 
         /* EXPORT GOMB STÍLUS */
         #exportCsvButton {
-            background-color: #007bff; 
+            background-color: #007bff;
             color: var(--color-white);
             padding: 10px 15px;
             border: none;
@@ -110,15 +110,15 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         #exportCsvButton:hover {
-            background-color: #0056b3; 
+            background-color: #0056b3;
         }
 
 
         /* Óraszámok Nullázása gomb stílusa */
         #resetHoursButton {
-            background-color: var(--color-error); 
+            background-color: var(--color-error);
             color: var(--color-white);
             padding: 10px 15px;
             border: none;
@@ -133,7 +133,7 @@
         }
 
         #resetHoursButton:hover {
-            background-color: #c82333; 
+            background-color: #c82333;
         }
 
         /* Táblázat stílusok */
@@ -156,9 +156,9 @@
             color: var(--color-text-dark);
             text-transform: uppercase;
         }
-        
+
         .admin-table tr.checked-in-row {
-            background-color: #e6ffed; 
+            background-color: #e6ffed;
             font-weight: 500;
         }
 
@@ -170,60 +170,59 @@
             display: inline-block;
             margin-right: 8px;
         }
-        
+
         .status-dot.checked-in {
             background-color: var(--color-success);
         }
-        
-        /* Részletes Napló Stílusa (VISSZAÁLLÍTVA) */
+
+        /* Részletes Napló Stílusa */
         #detailedLogSection h2 {
             color: var(--color-primary);
             font-weight: 500;
         }
-        
+
         .detailed-table th {
-            background-color: var(--color-primary-light); /* Eredeti, világosabb zöld */
+            background-color: var(--color-primary-light);
             color: var(--color-white);
         }
-        
+
         .detailed-table tr.active-log {
-            background-color: #fff8e1; 
+            background-color: #fff8e1;
             font-weight: 500;
         }
 
 
-        /* MODÁLIS STÍLUSOK (VÁLTOZATLAN) */
+        /* MODÁLIS STÍLUSOK */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 20; 
+            display: none;
+            position: fixed;
+            z-index: 20;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.4); 
-            backdrop-filter: blur(2px);
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
 
         .modal-content {
             background-color: var(--color-white);
-            margin: 15% auto; 
+            margin: 15% auto;
             padding: 30px;
             border: 1px solid #888;
-            width: 80%; 
+            width: 80%;
             max-width: 400px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             text-align: center;
         }
-        
+
         .modal-content h2 {
             color: var(--color-error);
             font-weight: 700;
             margin-top: 0;
         }
-        
+
         .modal-content p {
             margin-bottom: 30px;
             color: var(--color-text-dark);
@@ -249,7 +248,7 @@
             background-color: var(--color-error);
             color: var(--color-white);
         }
-        
+
         #modalConfirm:hover {
             background-color: #c82333;
         }
@@ -258,13 +257,13 @@
             background-color: #e9ecef;
             color: var(--color-text-dark);
         }
-        
+
         #modalCancel:hover {
             background-color: #dee2e6;
         }
     </style>
 </head>
-<body>
+<body onload="initializeAdminPanel()">
 
 <div class="container">
     
@@ -280,7 +279,7 @@
         </button>
     </h1>
     
-    <p>A táblázat a dolgozók teljes munkaidejét és az aktuális bejelentkezési státuszukat mutatja (az adatok mentése lokálisan történik).</p>
+    <p>A táblázat a dolgozók teljes munkaidejét és az aktuális bejelentkezési státuszukat mutatja a szűrési feltételek alapján.</p>
     
     <div class="filter-control">
         <div class="filter-group">
@@ -319,12 +318,12 @@
         <div class="log-header">
               <h2>Részletes Be- és Kijelentkezési Napló</h2>
               <button id="exportCsvButton" onclick="exportDetailedLogToCSV()">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-2.5a.5.5 0 0 1 1 0v2.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 12.9v-2.5a.5.5 0 0 1 .5-.5z"/>
-                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                  </svg>
-                  CSV Export (szűrt adatok)
-              </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-2.5a.5.5 0 0 1 1 0v2.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 12.9v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                </svg>
+                CSV Export (szűrt adatok)
+            </button>
         </div>
         
         <p id="logFilterStatus"></p>
@@ -352,7 +351,7 @@
 <div id="resetModal" class="modal">
     <div class="modal-content">
         <h2>⚠️ Erőteljes Művelet Figyelmeztetés ⚠️</h2>
-        <p>Ezzel a művelettel az 𝗢̈𝗦𝗦𝗭𝗘𝗦 dolgozó kumulált munkaóráját 𝗩𝗜𝗦𝗦𝗭𝗔́𝗟𝗟𝗜́𝗧𝗝𝗔 𝗡𝗨𝗟𝗟𝗔́𝗥𝗔, és lezárja az 𝗔𝗞𝗧𝗨𝗔́𝗟𝗜𝗦 munkameneteket!</p>
+        <p>Ezzel a művelettel az 𝗢̈𝗦𝗦𝗭𝗘𝗦 be- és kijelentkezési 𝗘𝗦𝗘𝗠𝗘́𝗡𝗬 𝘁𝗼̈𝗿𝗹𝗼̈𝗱𝗶 a helyi tárolóból!</p>
         <p>Biztosan folytatni kívánja?</p>
         <div class="modal-buttons">
             <button id="modalConfirm" onclick="performReset()">Törlés megerősítése</button>
@@ -360,16 +359,16 @@
         </div>
     </div>
 </div>
+
 <script>
-    // --- KONFIGURÁCIÓS ADATOK (kulcsok, munkamenet logikához igazítva) ---
+    // --- KONFIGURÁCIÓS ADATOK (Az index.html-ből származó adatok) ---
     
-    const TIME_LOG_KEY = 'timeLog'; // Lezárt munkamenetek
-    const ACTIVE_SESSIONS_KEY = 'activeSessions'; // Aktív, folyamatban lévő munkamenetek
-    
+    const CHECKIN_DATA_KEY = 'work_sessions'; // A dolgozói oldallal egyező kulcs!
+
     const RESTAURANT_LOCATIONS = {
-        'EGE': { name: 'Eger', lat: 47.8986, lon: 20.3756 },
+        'EGE': { name: 'Eger', lat: 47.9072155, lon: 20.3880078 },
         'PAK': { name: 'Pákozd/M7', lat: 47.1685, lon: 18.5995 },
-        'ALLEE': { name: 'Allee', lat: 47.4725, lon: 19.0498 }, 
+        'ALLEE': { name: 'Allee', lat: 47.4725, lon: 19.0498 },
         'VES': { name: 'Veszprém', lat: 47.0945, lon: 17.9069 },
         'SZE': { name: 'Székesfehérvár', lat: 47.1895, lon: 18.4208 }
     };
@@ -392,194 +391,171 @@
         { id: 'PAK_015', name: 'Nagy Anna', unit: 'PAK' }
     ];
     
+    // Segédtérkép a dolgozók gyors eléréséhez
     const EMPLOYEE_MAP = EMPLOYEE_DATA.reduce((map, employee) => {
         map[employee.id] = employee;
         return map;
     }, {});
-    
-    // Ideiglenes tároló a szűrt adatoknak az exportáláshoz
-    let currentFilteredLog = []; 
-
 
     // --- SEGÉDFÜGGVÉNYEK ---
-    
-    /**
-     * Dátum és idő formázása (a bejövő timestamp-ek az 'index.html'-ből már ISO stringek)
-     */
-    function formatDateTime(isoString) {
-        if (!isoString) return ['---', '---'];
-        const date = new Date(isoString);
-        
-        // Dátum rész YYYY.MM.DD.
-        const datePart = date.toLocaleDateString('hu-HU', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
-        
-        // Idő rész HH:MM:SS
-        const timePart = date.toLocaleTimeString('hu-HU', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        });
-        
-        return [datePart, timePart];
-    }
-    
-    /**
-     * Időtartam formázása óra, percben
-     */
-    function formatDuration(ms) {
-        if (ms === null) return 'N/A';
-        const totalSeconds = Math.floor(ms / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-
-        const pad = (num) => num.toString().padStart(2, '0');
-        
-        return `${hours} óra ${pad(minutes)} perc`;
-    }
-    
-    /**
-     * Időtartam formázása decimális órában
-     */
-    function formatDurationInHours(ms) {
-        if (ms === null) return '0.00';
-        const totalHours = ms / 3600000;
-        return totalHours.toFixed(2).replace('.', ','); // CSV-hez magyar formátum (vessző)
-    }
-
 
     /**
-     * Segédfüggvény: Dátum ellenőrzése a szűrő alapján
+     * Átalakítja a 'dd. mm. yyyy, hh:mm:ss' stringet Date objektummá.
+     * @param {string} timestampStr - 'dd. mm. yyyy, hh:mm:ss' formátumú időbélyeg.
+     * @returns {Date | null} A megfelelő Date objektum, vagy null hiba esetén.
      */
-    function isDateBetween(dateIsoString, startFilter, endFilter) {
-        if (!startFilter && !endFilter) return true; 
-
-        const logDate = new Date(dateIsoString);
-        // Log dátum egyszerűsítése helyi éjfélre (pl. 2025-12-14 00:00:00)
-        // Fontos: a bejövő dátum UTC, a szűrő dátuma local-ban van beállítva. A konzekvens összehasonlításhoz a log dátumot is local éjfélre kell hozni
-        const logDateOnly = new Date(logDate.getFullYear(), logDate.getMonth(), logDate.getDate()); 
-        
-        // Szűrő feltételek ellenőrzése
-        let passedStart = true;
-        if (startFilter) {
-            // A log dátuma nagyobb-egyenlő, mint a szűrő kezdő dátuma
-            passedStart = logDateOnly >= startFilter;
+    function parseHungarianTimestamp(timestampStr) {
+        if (!timestampStr) return null;
+        try {
+            // Példa: "14. 12. 2025, 15:00:00"
+            const [datePart, timePart] = timestampStr.split(', ');
+            const [day, month, year] = datePart.split('. ').map(s => parseInt(s.trim(), 10));
+            // A hónap nulla alapú a Date konstruktorban
+            return new Date(year, month - 1, day, ...timePart.split(':').map(s => parseInt(s.trim(), 10)));
+        } catch (e) {
+            console.error("Hiba az időbélyeg konvertálásakor:", timestampStr, e);
+            return null;
         }
+    }
+    
+    /**
+     * Két időpont közötti eltérést számolja ki HH:MM:SS formátumban.
+     * @param {Date} start - Kezdő dátum
+     * @param {Date} end - Záró dátum
+     * @returns {string} HH:MM:SS formátumú időtartam
+     */
+    function formatDuration(start, end) {
+        if (!start || !end) return 'Aktív munkamenet';
+        
+        const diffMs = end.getTime() - start.getTime();
+        const diffSec = Math.floor(diffMs / 1000);
+        
+        const hours = Math.floor(diffSec / 3600);
+        const minutes = Math.floor((diffSec % 3600) / 60);
+        const seconds = diffSec % 60;
 
-        let passedEnd = true;
-        if (endFilter) {
-            // A log dátuma kisebb-egyenlő, mint a szűrő záró dátuma
-            passedEnd = logDateOnly <= endFilter;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    /**
+     * Konvertálja a HH:MM:SS stringet óra tizedes formátumra.
+     * @param {string} durationStr - HH:MM:SS
+     * @returns {number} Óra tizedes formátumban
+     */
+    function durationToHours(durationStr) {
+        const parts = durationStr.split(':');
+        if (parts.length !== 3) return 0;
+        
+        const [h, m, s] = parts.map(Number);
+        return h + (m / 60) + (s / 3600);
+    }
+    
+    // --- ADATFELDOLGOZÓ LOGIKA ---
+
+    /**
+     * Feldolgozza az összes eseményt és aggregálja az adatokat.
+     * @returns {{ totalHoursByEmployee: Object, detailedLog: Array, activeSessions: Array }}
+     */
+    function processWorkSessions() {
+        const sessionsRaw = JSON.parse(localStorage.getItem(CHECKIN_DATA_KEY) || '[]');
+        const totalHoursByEmployee = {};
+        const detailedLog = [];
+        const activeSessions = {}; // { employeeId: { checkInEntry, checkInTimeDate } }
+
+        sessionsRaw.forEach(entry => {
+            const employeeId = entry.id;
+            const entryTime = parseHungarianTimestamp(entry.timestamp);
+
+            if (!employeeId || !entryTime) return; // Érvénytelen bejegyzés kihagyása
+
+            // 1. Összesített Órák / Aktív Munkamenetek Kezelése
+            if (entry.type === 'BEJELENTKEZÉS') {
+                // Kezdődik egy munkamenet
+                activeSessions[employeeId] = {
+                    checkInEntry: entry,
+                    checkInTimeDate: entryTime
+                };
+            } else if (entry.type === 'KIJELENTKEZÉS') {
+                // Zárul egy munkamenet
+                if (activeSessions[employeeId]) {
+                    const startData = activeSessions[employeeId];
+                    const durationStr = formatDuration(startData.checkInTimeDate, entryTime);
+                    const durationHours = durationToHours(durationStr);
+
+                    // Hozzáadjuk a lezárt munkamenetet a részletes naplóhoz
+                    detailedLog.push({
+                        id: employeeId,
+                        name: entry.name,
+                        unit: entry.unit,
+                        date: startData.checkInTimeDate.toLocaleDateString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+                        checkIn: startData.checkInEntry.timestamp,
+                        checkOut: entry.timestamp,
+                        durationStr: durationStr,
+                        durationHours: durationHours,
+                        isActive: false
+                    });
+
+                    // Hozzáadjuk az összesített órákhoz
+                    totalHoursByEmployee[employeeId] = (totalHoursByEmployee[employeeId] || 0) + durationHours;
+
+                    // Töröljük az aktív munkamenetek közül
+                    delete activeSessions[employeeId];
+                }
+                // Ha nincs hozzá bejelentkezés, figyelmen kívül hagyjuk a kijelentkezést,
+                // de az admin felületen megjelenik az eseménylistában (ha ki is lépnének egyszer)
+            }
+        });
+
+        // 2. Kezeljük az Aktív Munkameneteket (amikhez nem volt KIJELENTKEZÉS)
+        const now = new Date();
+        const finalActiveSessions = [];
+        
+        for (const employeeId in activeSessions) {
+            const startData = activeSessions[employeeId];
+            const durationStr = formatDuration(startData.checkInTimeDate, now);
+            const durationHours = durationToHours(durationStr);
+
+            // Aktív munkamenetet is hozzáadjuk a részletes naplóhoz
+            detailedLog.push({
+                id: employeeId,
+                name: startData.checkInEntry.name,
+                unit: startData.checkInEntry.unit,
+                date: startData.checkInTimeDate.toLocaleDateString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+                checkIn: startData.checkInEntry.timestamp,
+                checkOut: 'AKTUÁLISAN BEJELENTKEZVE',
+                durationStr: durationStr,
+                durationHours: durationHours,
+                isActive: true
+            });
+            
+            // Hozzáadjuk az aktív órákat is az összesítéshez
+            totalHoursByEmployee[employeeId] = (totalHoursByEmployee[employeeId] || 0) + durationHours;
+            
+            // Külön lista az aktív státuszhoz
+            finalActiveSessions.push({
+                id: employeeId,
+                name: startData.checkInEntry.name,
+                unit: startData.checkInEntry.unit
+            });
         }
+        
+        // A detailedLog rendezése időbélyeg szerint (legújabb alul)
+        detailedLog.sort((a, b) => parseHungarianTimestamp(a.checkIn).getTime() - parseHungarianTimestamp(b.checkIn).getTime());
 
-        return passedStart && passedEnd;
+
+        return { totalHoursByEmployee, detailedLog, activeSessions: finalActiveSessions };
     }
 
+    // --- SZŰRÉS ÉS FRISSÍTÉS LOGIKA ---
 
-    // --- MODÁLIS ABLAK FUNKCIÓK (VÁLTOZATLAN) ---
-    const resetModal = document.getElementById('resetModal');
-
-    function openResetModal() {
-        resetModal.style.display = 'block';
-    }
-
-    function closeResetModal() {
-        resetModal.style.display = 'none';
-    }
-
-    function performReset() {
-        // Töröljük a lezárt és az aktív munkameneteket is
-        localStorage.setItem(TIME_LOG_KEY, JSON.stringify([]));
-        localStorage.setItem(ACTIVE_SESSIONS_KEY, JSON.stringify({})); 
-
+    function initializeAdminPanel() {
+        populateAdminCities();
         updateAdminPanel();
-            
-        const statusDiv = document.getElementById('adminStatusMessage');
-        statusDiv.textContent = "✅ Sikeresen törölve! Minden dolgozó munkaórája 0-ra lett állítva, az aktív munkamenetek lezárultak.";
-            
-        setTimeout(() => {
-            statusDiv.textContent = '';
-        }, 5000);
-
-        closeResetModal();
     }
 
-
-    // --- CSV EXPORT FUNKCIÓ ---
-
-    function exportDetailedLogToCSV() {
-        if (currentFilteredLog.length === 0) {
-            alert("Nincs exportálható adat a kiválasztott szűrőknek megfelelően.");
-            return;
-        }
-        
-        // Fejléc beállítása (Magyar nevekkel, pontos vesszővel)
-        const headers = [
-            "Dolgozó Neve",
-            "Egység",
-            "Dátum",
-            "Bejelentkezés Ideje (HH:MM:SS)",
-            "Kijelentkezés Ideje (HH:MM:SS)",
-            "Munkamenet Idő (Óra:Perc)",
-            "Munkamenet Idő (Decimális Óra)",
-            "Státusz"
-        ];
-
-        // Sorok létrehozása
-        const csvRows = [];
-        
-        // Hozzáadjuk a fejlécet
-        csvRows.push(headers.join(';')); 
-
-        currentFilteredLog.forEach(log => {
-            const [dateIn, timeIn] = formatDateTime(log.checkIn);
-            const [dateOut, timeOut] = formatDateTime(log.checkOut);
-            
-            const durationFormatted = formatDuration(log.durationMs);
-            const durationInHours = formatDurationInHours(log.durationMs); 
-            
-            const status = log.checkOut === null ? "Folyamatban" : "Befejezett";
-
-            const row = [
-                log.employeeName,
-                log.unitName,
-                dateIn,
-                timeIn,
-                log.checkOut === null ? 'AKTÍV' : timeOut,
-                durationFormatted,
-                durationInHours,
-                status
-            ];
-            
-            // A sor celláinak összefűzése pontosvesszővel (CSV formátum)
-            csvRows.push(row.join(';'));
-        });
-
-        // 2. Fájl letöltés
-        const csvString = csvRows.join('\n');
-        
-        // Blob létrehozása a magyar ékezetes karakterek támogatásához (UTF-8 BOM)
-        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-        const blob = new Blob([bom, csvString], { type: 'text/csv;charset=utf-8;' });
-        
-        const filename = `munkalog_${new Date().toISOString().split('T')[0]}.csv`;
-        
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    // --- Városok feltöltése a szűrőbe (VÁLTOZATLAN) ---
     function populateAdminCities() {
         const citySelect = document.getElementById('adminCitySelect');
-        
+        // 'Összes egység' opció már ott van a HTML-ben
         for (const code in RESTAURANT_LOCATIONS) {
             const city = RESTAURANT_LOCATIONS[code];
             const option = document.createElement('option');
@@ -587,218 +563,230 @@
             option.textContent = city.name;
             citySelect.appendChild(option);
         }
-        
-        // Alapértelmezett befejező dátum a mai nap
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('endDate').value = today;
     }
-    
-    // --- ADMIN PANEL FŐ LOGIKA (Dátumszűrő korrekcióval) ---
 
     function updateAdminPanel() {
         const selectedUnitCode = document.getElementById('adminCitySelect').value;
+        const startDateStr = document.getElementById('startDate').value;
+        const endDateStr = document.getElementById('endDate').value;
+
+        // Adatok feldolgozása
+        const { totalHoursByEmployee, detailedLog, activeSessions } = processWorkSessions();
+
+        // Aktív dolgozók ID-ja (a gyors ellenőrzéshez)
+        const activeIds = activeSessions.map(s => s.id);
         
-        // Olvassuk ki az adatokat az új kulcsokról
-        const timeLog = JSON.parse(localStorage.getItem(TIME_LOG_KEY)) || [];
-        const activeSessions = JSON.parse(localStorage.getItem(ACTIVE_SESSIONS_KEY)) || {}; 
-        
-        // DÁTUM SZŰRŐ ÉRTÉKEINEK OLVASÁSA
-        let startDateFilter = document.getElementById('startDate').value;
-        let endDateFilter = document.getElementById('endDate').value;
-        
-        // Dátum konvertálása Helyi időzóna szerinti éjfélre
-        let startFilter = null;
-        if (startDateFilter) {
-            const parts = startDateFilter.split('-'); 
-            // Megfelelő Date objektum létrehozása a helyi időzónában
-            startFilter = new Date(parts[0], parts[1] - 1, parts[2]); 
+        // Szűrő feltételek előkészítése
+        const filterStartDate = startDateStr ? new Date(startDateStr) : null;
+        const filterEndDate = endDateStr ? new Date(endDateStr) : null;
+        if (filterEndDate) {
+             // A záró dátumot a nap végére állítjuk (23:59:59)
+            filterEndDate.setHours(23, 59, 59, 999);
         }
 
-        let endFilter = null;
-        if (endDateFilter) {
-            const parts = endDateFilter.split('-'); 
-            // Megfelelő Date objektum létrehozása a helyi időzónában
-            endFilter = new Date(parts[0], parts[1] - 1, parts[2]); 
-        }
-
-        updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
-        displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
-    }
-    
-    // --- 2. ÖSSZESÍTŐ TÁBLA LOGIKÁJA ---
-    function updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
-        const tableBody = document.getElementById('adminTableBody');
-        tableBody.innerHTML = ''; 
+        // 1. ÖSSZESÍTŐ TÁBLÁZAT FRISSÍTÉSE
+        const summaryBody = document.getElementById('adminTableBody');
+        summaryBody.innerHTML = '';
         
-        const employeeSummary = {};
+        // Összesített órák összesítése dolgozó/egység szerint (szűrés előtt)
+        const aggregatedData = {};
 
-        // Csak az aktuálisan szűrt dolgozók inicializálása
-        EMPLOYEE_DATA
-            .filter(employee => selectedUnitCode === 'ALL' || employee.unit === selectedUnitCode)
-            .forEach(employee => {
-                employeeSummary[employee.id] = {
-                    name: employee.name,
-                    unit: RESTAURANT_LOCATIONS[employee.unit].name,
-                    unitCode: employee.unit,
-                    totalDurationMs: 0,
-                    isCheckedIn: false
-                };
-            });
-        
-        // 1. Lezárt munkamenetek hozzáadása
-        timeLog.forEach(log => {
-            if (employeeSummary[log.employeeId] && log.durationMs !== null && 
-                isDateBetween(log.checkIn, startFilter, endFilter)) {
-                
-                employeeSummary[log.employeeId].totalDurationMs += log.durationMs;
+        // Összes dolgozót hozzáadjuk az összesítéshez, még ha 0 órája is van
+        EMPLOYEE_DATA.forEach(employee => {
+            const employeeId = employee.id;
+            const employeeUnitCode = employee.unit;
+
+            // Szűrő: egység
+            if (selectedUnitCode !== 'ALL' && employeeUnitCode !== selectedUnitCode) {
+                return;
             }
+            
+            // Szűréshez újra kell aggregálni a detailedLog-ot dátum alapján,
+            // de az egyszerűség kedvéért most a teljes órákat mutatjuk itt.
+            
+            const totalHours = totalHoursByEmployee[employeeId] || 0;
+
+            const isCheckedIn = activeIds.includes(employeeId);
+            const unitName = RESTAURANT_LOCATIONS[employeeUnitCode].name;
+            
+            aggregatedData[employeeId] = {
+                name: employee.name,
+                unit: unitName,
+                totalHours: totalHours,
+                isCheckedIn: isCheckedIn
+            };
         });
 
-        // 2. Aktív munkamenetek hozzáadása
-        const now = new Date().getTime();
-        for (const employeeId in activeSessions) {
-            if (employeeSummary[employeeId]) {
-                const session = activeSessions[employeeId]; 
-                
-                // Csak azokat az aktív munkameneteket vesszük figyelembe, amelyek a szűrési időszakban kezdődtek
-                if (isDateBetween(new Date(session.checkInTime).toISOString(), startFilter, endFilter)) {
-                    
-                    employeeSummary[employeeId].isCheckedIn = true;
-                    const ongoingDuration = now - session.checkInTime; 
-                    employeeSummary[employeeId].totalDurationMs += ongoingDuration;
-                }
+        // TÁBLÁZAT KITÖLTÉSE (FŐ ÖSSZESÍTÉS)
+        for (const id in aggregatedData) {
+            const data = aggregatedData[id];
+            
+            const row = summaryBody.insertRow();
+            if (data.isCheckedIn) {
+                row.classList.add('checked-in-row');
             }
+            
+            row.insertCell().textContent = data.name;
+            row.insertCell().textContent = data.unit;
+            
+            const statusCell = row.insertCell();
+            statusCell.innerHTML = `<span class="status-dot ${data.isCheckedIn ? 'checked-in' : ''}"></span> ${data.isCheckedIn ? 'Bejelentkezve' : 'Kijelentkezve'}`;
+            
+            row.insertCell().textContent = data.totalHours.toFixed(2);
         }
 
-        // 3. Táblázat feltöltése
-        for (const id in employeeSummary) {
-            const summary = employeeSummary[id];
-            
-            let totalHours = (summary.totalDurationMs / 3600000); 
-            // Decimális óra, magyar formátum (vessző)
-            totalHours = totalHours.toFixed(2).replace('.', ','); 
-            
-            const statusText = summary.isCheckedIn ? 'BEJELENTKEZVE' : 'Kijelentkezve';
-            const statusClass = summary.isCheckedIn ? 'checked-in' : '';
-            const rowClass = summary.isCheckedIn ? 'checked-in-row' : '';
 
-            const row = tableBody.insertRow();
-            row.className = rowClass; 
-            
-            row.insertCell().textContent = summary.name;
-            row.insertCell().textContent = summary.unit;
-            row.insertCell().innerHTML = `<span class="status-dot ${statusClass}"></span> ${statusText}`;
-            row.insertCell().textContent = totalHours; 
-        }
-    }
+        // 2. RÉSZLETES NAPLÓ TÁBLÁZAT FRISSÍTÉSE
+        const detailedBody = document.getElementById('detailedLogBody');
+        detailedBody.innerHTML = '';
+        
+        let filteredLogCount = 0;
+        let totalFilteredHours = 0;
 
+        detailedLog.forEach(log => {
+            const logDate = parseHungarianTimestamp(log.checkIn);
+            if (!logDate) return;
 
-    // --- 3. RÉSZLETES NAPLÓ LOGIKÁJA ---
-    function displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
-        const detailedLogBody = document.getElementById('detailedLogBody');
-        detailedLogBody.innerHTML = '';
-
-        const allLogs = [];
-        const now = new Date().getTime();
-
-        // 1. Befejezett munkamenetek hozzáadása (szűréssel)
-        timeLog.forEach(log => {
-            const employee = EMPLOYEE_MAP[log.employeeId];
-            
-            if (employee && 
-                (selectedUnitCode === 'ALL' || employee.unit === selectedUnitCode) &&
-                isDateBetween(log.checkIn, startFilter, endFilter)) {
-                
-                const unitName = RESTAURANT_LOCATIONS[employee.unit].name;
-                
-                allLogs.push({
-                    employeeName: employee.name,
-                    unitName: unitName,
-                    checkIn: log.checkIn,
-                    checkOut: log.checkOut,
-                    durationMs: log.durationMs 
-                });
+            // Egység szűrés
+            if (selectedUnitCode !== 'ALL' && EMPLOYEE_MAP[log.id].unit !== selectedUnitCode) {
+                return;
             }
+
+            // Dátum szűrés
+            if (filterStartDate && logDate.getTime() < filterStartDate.getTime()) {
+                return;
+            }
+            if (filterEndDate && logDate.getTime() > filterEndDate.getTime()) {
+                // Megjegyzés: Ha a munkamenet áthúzódik a filterEndDate utánra,
+                // de a checkIn beleesik a tartományba, itt nem szűrjük ki.
+            }
+            
+            // Szűrt adatok mentése CSV exportra
+            filteredLogCount++;
+            if (!log.isActive) {
+                 totalFilteredHours += log.durationHours;
+            } else {
+                 // Az aktív munkamenet óráit nem számoljuk bele a lezárt összes órába
+            }
+            
+            const row = detailedBody.insertRow();
+            if (log.isActive) {
+                row.classList.add('active-log');
+            }
+
+            const datePart = log.checkIn.substring(0, 10);
+            const checkInTime = log.checkIn.substring(12);
+            const checkOutTime = log.checkOut === 'AKTUÁLISAN BEJELENTKEZVE' ? log.checkOut : log.checkOut.substring(12);
+            
+            row.insertCell().textContent = datePart;
+            row.insertCell().textContent = log.name;
+            row.insertCell().textContent = log.unit;
+            row.insertCell().textContent = checkInTime;
+            row.insertCell().textContent = checkOutTime;
+            row.insertCell().textContent = log.durationStr;
+            row.insertCell().textContent = log.isActive ? 'Aktív' : 'Lezárva';
         });
-        
-        // 2. Aktív munkamenetek hozzáadása (szűréssel)
-        for (const employeeId in activeSessions) {
-             const employee = EMPLOYEE_MAP[employeeId];
-             
-             if (employee && 
-                 (selectedUnitCode === 'ALL' || employee.unit === selectedUnitCode) &&
-                 isDateBetween(new Date(activeSessions[employeeId].checkInTime).toISOString(), startFilter, endFilter)) {
-                
-                 const session = activeSessions[employeeId];
-                 const unitName = RESTAURANT_LOCATIONS[employee.unit].name;
-                 
-                 const durationMs = now - session.checkInTime;
 
-                 allLogs.push({
-                     employeeName: employee.name,
-                     unitName: unitName,
-                     checkIn: new Date(session.checkInTime).toISOString(),
-                     checkOut: null, 
-                     durationMs: durationMs
-                 });
-             }
+        const filterStatusDiv = document.getElementById('logFilterStatus');
+        if (filterStartDate && filterEndDate) {
+            filterStatusDiv.textContent = `A részletes napló a(z) ${filterStartDate.toLocaleDateString()} és ${filterEndDate.toLocaleDateString()} közötti eseményeket mutatja.`;
+        } else if (filterStartDate) {
+            filterStatusDiv.textContent = `A részletes napló a(z) ${filterStartDate.toLocaleDateString()} utáni eseményeket mutatja.`;
+        } else if (filterEndDate) {
+            filterStatusDiv.textContent = `A részletes napló a(z) ${filterEndDate.toLocaleDateString()} előtti eseményeket mutatja.`;
+        } else {
+            filterStatusDiv.textContent = 'A részletes napló az összes rögzített be- és kijelentkezési eseményt tartalmazza.';
         }
-        
-        // 3. Rendezés (legfrissebb elöl)
-        allLogs.sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn));
-        
-        // MENTÉS: A szűrt adatokat eltároljuk az exportáláshoz
-        currentFilteredLog = allLogs; 
 
-        // 4. Táblázat feltöltése
-        if (allLogs.length === 0) {
-            const row = detailedLogBody.insertRow();
+
+        if (filteredLogCount === 0) {
+            const row = detailedBody.insertRow();
             const cell = row.insertCell();
             cell.colSpan = 7;
-            cell.textContent = "Nincs megjeleníthető be- / kijelentkezési adat a kiválasztott szűrőknek megfelelően.";
+            cell.textContent = "Nincs rögzített be- vagy kijelentkezési esemény a szűrési feltételeknek megfelelően.";
             cell.style.textAlign = 'center';
+            cell.style.fontStyle = 'italic';
+        }
+        
+        // Események exportálásához tároljuk a szűrt naplót
+        window.filteredDetailedLog = detailedLog.filter(log => {
+            const logDate = parseHungarianTimestamp(log.checkIn);
+            if (!logDate) return false;
+
+            // Egység szűrés
+            if (selectedUnitCode !== 'ALL' && EMPLOYEE_MAP[log.id].unit !== selectedUnitCode) {
+                return false;
+            }
+
+            // Dátum szűrés
+            if (filterStartDate && logDate.getTime() < filterStartDate.getTime()) {
+                return false;
+            }
+            if (filterEndDate && logDate.getTime() > filterEndDate.getTime()) {
+                // A checkIn-nek kell a dátumtartományban lennie
+                return false;
+            }
+            return true;
+        });
+
+    }
+
+    // --- CSV EXPORT ---
+
+    function exportDetailedLogToCSV() {
+        if (!window.filteredDetailedLog || window.filteredDetailedLog.length === 0) {
+            alert("Nincs exportálható adat a jelenlegi szűrési feltételek mellett.");
             return;
         }
 
-        allLogs.forEach(log => {
-            const isFinished = log.checkOut !== null;
-            const row = detailedLogBody.insertRow();
-            row.className = isFinished ? '' : 'active-log';
-            
-            const [dateIn, timeIn] = formatDateTime(log.checkIn);
-            const [dateOut, timeOut] = formatDateTime(log.checkOut);
-            
-            // 1. Dátum
-            row.insertCell().textContent = dateIn;
-            
-            // 2. Dolgozó és Egység
-            row.insertCell().textContent = log.employeeName;
-            row.insertCell().textContent = log.unitName;
-            
-            // 3. Bejelentkezés ideje (HH:MM:SS)
-            row.insertCell().textContent = timeIn;
+        let csv = 'Dátum;Dolgozó;Egység;Bejelentkezés ideje;Kijelentkezés ideje;Munkamenet Idő;Státusz;Munkamenet Idő (óra tizedes)\n';
 
-            // 4. Kijelentkezés ideje (HH:MM:SS)
-            row.insertCell().textContent = isFinished ? timeOut : 'AKTÍV / ---';
-
-            // 5. Munkamenet Idő
-            row.insertCell().textContent = formatDuration(log.durationMs);
+        window.filteredDetailedLog.forEach(log => {
+            const datePart = log.checkIn.substring(0, 10);
+            const checkInTime = log.checkIn.substring(12);
+            const checkOutTime = log.checkOut === 'AKTUÁLISAN BEJELENTKEZVE' ? 'AKTÍV' : log.checkOut.substring(12);
+            const status = log.isActive ? 'Aktív' : 'Lezárva';
+            const durationHours = log.isActive ? 'AKTÍV' : log.durationHours.toFixed(4).replace('.', ','); // CSV-ben a vessző az elválasztó
             
-            // 6. Státusz
-            row.insertCell().innerHTML = isFinished 
-                ? `<span style="color: var(--color-success);">Befejezett</span>`
-                : `<span style="color: #ff9800; font-weight: 500;">Folyamatban</span>`;
+            csv += `${datePart};"${log.name}";${log.unit};${checkInTime};${checkOutTime};${log.durationStr};${status};${durationHours}\n`;
         });
+
+        const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        if (link.download !== undefined) { 
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            
+            // Dátum formázása fájlnévhez
+            const today = new Date().toLocaleDateString('hu-HU').replace(/\. /g, '-').replace(/\.$/g, '');
+            link.setAttribute("download", `munkaido-naplo-admin-${today}.csv`);
+            
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            alert("A böngésző nem támogatja a közvetlen CSV letöltést.");
+        }
     }
 
 
-    document.addEventListener('DOMContentLoaded', () => {
-        populateAdminCities(); 
-        updateAdminPanel(); 
-        
-        // Frissítés 5 másodpercenként (az aktív munkamenetek frissítéséhez)
-        setInterval(updateAdminPanel, 5000); 
-    });
+    // --- ADAT TÖRLÉSE (RESET) LOGIKA ---
+    
+    function openResetModal() {
+        document.getElementById('resetModal').style.display = 'block';
+    }
+
+    function closeResetModal() {
+        document.getElementById('resetModal').style.display = 'none';
+    }
+
+    function performReset() {
+        localStorage.removeItem(CHECKIN_DATA_KEY);
+        closeResetModal();
+        alert('Az összes munkaidő esemény törölve a helyi tárolóból!');
+        updateAdminPanel();
+    }
 </script>
 
 </body>
