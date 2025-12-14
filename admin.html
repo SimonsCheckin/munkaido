@@ -8,57 +8,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ADMIN STÍLUSOK */
+        /* CSS VÁLTOZÓK AZ INDEX.HTML-BŐL */
         :root {
-            --color-primary: #1e7e34;
-            --color-background: #f8f9fa;
+            --color-primary: #1e7e34; /* Sötétzöld */
+            --color-primary-light: #4caf50; /* Világosabb zöld (Success) */
+            --color-background: #f8f9fa; /* Világosszürke háttér */
             --color-white: #ffffff;
-            --color-text-dark: #212529;
-            --color-error: #dc3545;
-            --color-success: #4caf50;
-            --color-primary-light: #4caf50;
+            --color-text-dark: #212529; /* Sötét szöveg */
+            --color-text-light: #adb5bd;
+            --color-error: #dc3545; /* Piros (Error) */
         }
 
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 40px;
+            padding: 40px 0; /* Padding csak felül/alul, hogy a container középen legyen */
             background-color: var(--color-background);
             color: var(--color-text-dark);
+            min-height: 100vh; /* Teljes képernyő magasság */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Felülre igazítva */
         }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
+            width: 95%;
+            max-width: 1100px; /* Az index.html layout-container max-width-e */
+            margin: 40px auto;
             background-color: var(--color-white);
-            padding: 30px;
+            padding: 30px 40px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Index.html árnyék */
             position: relative;
         }
 
         h1 {
             color: var(--color-primary);
-            font-weight: 500;
-            border-bottom: 2px solid #e9ecef;
+            font-weight: 700;
+            border-bottom: 3px solid var(--color-primary-light);
             padding-bottom: 10px;
             margin-top: 0;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        h2 {
+            color: var(--color-text-dark);
+            font-weight: 500;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
         /* Szűrési vezérlő stílusa */
         .filter-control {
-            margin-top: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
             border: 1px solid #dee2e6;
             border-radius: 8px;
-            background-color: #fcfcfc;
+            background-color: #f7f7f7; /* Kicsit eltérő háttér a kiemelésért */
             display: flex;
-            gap: 20px;
+            gap: 25px;
             flex-wrap: wrap;
         }
 
@@ -69,7 +81,6 @@
 
         .filter-control label {
             font-weight: 500;
-            margin-right: 10px;
             display: block;
             margin-bottom: 5px;
             color: var(--color-primary);
@@ -83,6 +94,46 @@
             font-size: 1rem;
             background-color: var(--color-white);
             box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        
+        .filter-control select:focus, .filter-control input[type="date"]:focus {
+             border-color: var(--color-primary);
+             outline: none;
+        }
+
+        /* GOMBOK STÍLUSA */
+        .admin-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #exportCsvButton {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #exportCsvButton:hover {
+            background-color: #1a6d2c; /* Kicsit sötétebb primary */
+        }
+        
+        #resetHoursButton {
+            background-color: var(--color-error);
+            color: var(--color-white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #resetHoursButton:hover {
+            background-color: #b02a37; /* Kicsit sötétebb error */
         }
 
         /* CÍM ÉS EXPORT GOMB TÁROLÓ */
@@ -94,71 +145,40 @@
             padding-top: 20px;
             border-top: 1px solid #e9ecef;
         }
-
-        /* EXPORT GOMB STÍLUS */
-        #exportCsvButton {
-            background-color: #007bff;
-            color: var(--color-white);
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        
+        .log-header h2 {
+            margin-top: 0;
+            color: var(--color-primary);
         }
 
-        #exportCsvButton:hover {
-            background-color: #0056b3;
-        }
-
-
-        /* Óraszámok Nullázása gomb stílusa */
-        #resetHoursButton {
-            background-color: var(--color-error);
-            color: var(--color-white);
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #resetHoursButton:hover {
-            background-color: #c82333;
-        }
 
         /* Táblázat stílusok */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .admin-table th, .admin-table td {
-            padding: 12px 10px;
+            padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #f0f0f0;
         }
 
         .admin-table th {
-            background-color: #e9ecef;
+            background-color: var(--color-primary);
+            color: var(--color-white);
             font-weight: 500;
-            color: var(--color-text-dark);
             text-transform: uppercase;
         }
 
+        .admin-table tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
         .admin-table tr.checked-in-row {
-            background-color: #e6ffed;
+            background-color: #e6ffed; /* Halványzöld kiemelés */
             font-weight: 500;
         }
 
@@ -172,48 +192,42 @@
         }
 
         .status-dot.checked-in {
-            background-color: var(--color-success);
+            background-color: var(--color-primary-light);
         }
 
         /* Részletes Napló Stílusa */
-        #detailedLogSection h2 {
-            color: var(--color-primary);
-            font-weight: 500;
-        }
-
         .detailed-table th {
-            background-color: var(--color-primary-light);
-            color: var(--color-white);
+            background-color: #4caf50; /* Világosabb primary az al-táblázat fejlécéhez */
         }
 
         .detailed-table tr.active-log {
-            background-color: #fff8e1;
+            background-color: #fffde7; /* Sárgás kiemelés az aktív munkamenetnek */
             font-weight: 500;
         }
 
 
-        /* MODÁLIS STÍLUSOK */
+        /* MODÁLIS ABLAK (Törlés) STÍLUSOK */
         .modal {
             display: none;
             position: fixed;
-            z-index: 20;
+            z-index: 10;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px); /* Az index.html-ben is volt */
         }
 
         .modal-content {
             background-color: var(--color-white);
             margin: 15% auto;
             padding: 30px;
-            border: 1px solid #888;
             width: 80%;
             max-width: 400px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Index.html árnyék */
             text-align: center;
         }
 
@@ -221,21 +235,23 @@
             color: var(--color-error);
             font-weight: 700;
             margin-top: 0;
+            font-size: 1.8rem;
         }
 
         .modal-content p {
             margin-bottom: 30px;
             color: var(--color-text-dark);
+            font-size: 1rem;
         }
 
         .modal-buttons {
             display: flex;
             justify-content: space-around;
-            gap: 10px;
+            gap: 15px;
         }
 
         .modal-buttons button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             font-weight: 500;
@@ -250,7 +266,7 @@
         }
 
         #modalConfirm:hover {
-            background-color: #c82333;
+            background-color: #b02a37;
         }
 
         #modalCancel {
@@ -270,8 +286,8 @@
     <h1>
         <span>📊 Adminisztrációs Munkaidő Összesítés</span>
         
-        <button id="resetHoursButton" onclick="openResetModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <button id="resetHoursButton" class="admin-button" onclick="openResetModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M8 3a5 5 0 0 0-4.546 2.914.5.5 0 0 1-.9.377 6 6 0 1 1 13.626 4.91.5.5 0 0 1-.904-.413A5 5 0 1 0 8 3z"/>
                 <path d="M8 10V5h1v4h4v1z"/>
             </svg>
@@ -300,7 +316,7 @@
         </div>
     </div>
 
-    <h2>Összesített Munkaórák</h2>
+    <h2>Dolgozói Munkaóra Összesítés</h2>
     <table class="admin-table">
         <thead>
             <tr>
@@ -317,8 +333,8 @@
     <div id="detailedLogSection">
         <div class="log-header">
               <h2>Részletes Be- és Kijelentkezési Napló</h2>
-              <button id="exportCsvButton" onclick="exportDetailedLogToCSV()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <button id="exportCsvButton" class="admin-button" onclick="exportDetailedLogToCSV()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-2.5a.5.5 0 0 1 1 0v2.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 12.9v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
                 </svg>
@@ -326,7 +342,7 @@
             </button>
         </div>
         
-        <p id="logFilterStatus"></p>
+        <p style="color: var(--color-primary); font-style: italic;" id="logFilterStatus"></p>
         <table class="admin-table detailed-table">
             <thead>
                 <tr>
@@ -401,16 +417,12 @@
 
     /**
      * Átalakítja a 'dd. mm. yyyy, hh:mm:ss' stringet Date objektummá.
-     * @param {string} timestampStr - 'dd. mm. yyyy, hh:mm:ss' formátumú időbélyeg.
-     * @returns {Date | null} A megfelelő Date objektum, vagy null hiba esetén.
      */
     function parseHungarianTimestamp(timestampStr) {
         if (!timestampStr) return null;
         try {
-            // Példa: "14. 12. 2025, 15:00:00"
             const [datePart, timePart] = timestampStr.split(', ');
             const [day, month, year] = datePart.split('. ').map(s => parseInt(s.trim(), 10));
-            // A hónap nulla alapú a Date konstruktorban
             return new Date(year, month - 1, day, ...timePart.split(':').map(s => parseInt(s.trim(), 10)));
         } catch (e) {
             console.error("Hiba az időbélyeg konvertálásakor:", timestampStr, e);
@@ -420,9 +432,6 @@
     
     /**
      * Két időpont közötti eltérést számolja ki HH:MM:SS formátumban.
-     * @param {Date} start - Kezdő dátum
-     * @param {Date} end - Záró dátum
-     * @returns {string} HH:MM:SS formátumú időtartam
      */
     function formatDuration(start, end) {
         if (!start || !end) return 'Aktív munkamenet';
@@ -439,8 +448,6 @@
 
     /**
      * Konvertálja a HH:MM:SS stringet óra tizedes formátumra.
-     * @param {string} durationStr - HH:MM:SS
-     * @returns {number} Óra tizedes formátumban
      */
     function durationToHours(durationStr) {
         const parts = durationStr.split(':');
@@ -452,23 +459,18 @@
     
     // --- ADATFELDOLGOZÓ LOGIKA ---
 
-    /**
-     * Feldolgozza az összes eseményt és aggregálja az adatokat.
-     * @returns {{ totalHoursByEmployee: Object, detailedLog: Array, activeSessions: Array }}
-     */
     function processWorkSessions() {
         const sessionsRaw = JSON.parse(localStorage.getItem(CHECKIN_DATA_KEY) || '[]');
         const totalHoursByEmployee = {};
         const detailedLog = [];
-        const activeSessions = {}; // { employeeId: { checkInEntry, checkInTimeDate } }
+        const activeSessions = {}; 
 
         sessionsRaw.forEach(entry => {
             const employeeId = entry.id;
             const entryTime = parseHungarianTimestamp(entry.timestamp);
 
-            if (!employeeId || !entryTime) return; // Érvénytelen bejegyzés kihagyása
+            if (!employeeId || !entryTime) return; 
 
-            // 1. Összesített Órák / Aktív Munkamenetek Kezelése
             if (entry.type === 'BEJELENTKEZÉS') {
                 // Kezdődik egy munkamenet
                 activeSessions[employeeId] = {
@@ -482,7 +484,6 @@
                     const durationStr = formatDuration(startData.checkInTimeDate, entryTime);
                     const durationHours = durationToHours(durationStr);
 
-                    // Hozzáadjuk a lezárt munkamenetet a részletes naplóhoz
                     detailedLog.push({
                         id: employeeId,
                         name: entry.name,
@@ -495,18 +496,14 @@
                         isActive: false
                     });
 
-                    // Hozzáadjuk az összesített órákhoz
                     totalHoursByEmployee[employeeId] = (totalHoursByEmployee[employeeId] || 0) + durationHours;
 
-                    // Töröljük az aktív munkamenetek közül
                     delete activeSessions[employeeId];
                 }
-                // Ha nincs hozzá bejelentkezés, figyelmen kívül hagyjuk a kijelentkezést,
-                // de az admin felületen megjelenik az eseménylistában (ha ki is lépnének egyszer)
             }
         });
 
-        // 2. Kezeljük az Aktív Munkameneteket (amikhez nem volt KIJELENTKEZÉS)
+        // 2. Kezeljük az Aktív Munkameneteket
         const now = new Date();
         const finalActiveSessions = [];
         
@@ -515,7 +512,6 @@
             const durationStr = formatDuration(startData.checkInTimeDate, now);
             const durationHours = durationToHours(durationStr);
 
-            // Aktív munkamenetet is hozzáadjuk a részletes naplóhoz
             detailedLog.push({
                 id: employeeId,
                 name: startData.checkInEntry.name,
@@ -528,10 +524,8 @@
                 isActive: true
             });
             
-            // Hozzáadjuk az aktív órákat is az összesítéshez
             totalHoursByEmployee[employeeId] = (totalHoursByEmployee[employeeId] || 0) + durationHours;
             
-            // Külön lista az aktív státuszhoz
             finalActiveSessions.push({
                 id: employeeId,
                 name: startData.checkInEntry.name,
@@ -539,7 +533,6 @@
             });
         }
         
-        // A detailedLog rendezése időbélyeg szerint (legújabb alul)
         detailedLog.sort((a, b) => parseHungarianTimestamp(a.checkIn).getTime() - parseHungarianTimestamp(b.checkIn).getTime());
 
 
@@ -555,7 +548,6 @@
 
     function populateAdminCities() {
         const citySelect = document.getElementById('adminCitySelect');
-        // 'Összes egység' opció már ott van a HTML-ben
         for (const code in RESTAURANT_LOCATIONS) {
             const city = RESTAURANT_LOCATIONS[code];
             const option = document.createElement('option');
@@ -570,17 +562,13 @@
         const startDateStr = document.getElementById('startDate').value;
         const endDateStr = document.getElementById('endDate').value;
 
-        // Adatok feldolgozása
         const { totalHoursByEmployee, detailedLog, activeSessions } = processWorkSessions();
 
-        // Aktív dolgozók ID-ja (a gyors ellenőrzéshez)
         const activeIds = activeSessions.map(s => s.id);
         
-        // Szűrő feltételek előkészítése
         const filterStartDate = startDateStr ? new Date(startDateStr) : null;
         const filterEndDate = endDateStr ? new Date(endDateStr) : null;
         if (filterEndDate) {
-             // A záró dátumot a nap végére állítjuk (23:59:59)
             filterEndDate.setHours(23, 59, 59, 999);
         }
 
@@ -588,21 +576,15 @@
         const summaryBody = document.getElementById('adminTableBody');
         summaryBody.innerHTML = '';
         
-        // Összesített órák összesítése dolgozó/egység szerint (szűrés előtt)
         const aggregatedData = {};
 
-        // Összes dolgozót hozzáadjuk az összesítéshez, még ha 0 órája is van
         EMPLOYEE_DATA.forEach(employee => {
             const employeeId = employee.id;
             const employeeUnitCode = employee.unit;
 
-            // Szűrő: egység
             if (selectedUnitCode !== 'ALL' && employeeUnitCode !== selectedUnitCode) {
                 return;
             }
-            
-            // Szűréshez újra kell aggregálni a detailedLog-ot dátum alapján,
-            // de az egyszerűség kedvéért most a teljes órákat mutatjuk itt.
             
             const totalHours = totalHoursByEmployee[employeeId] || 0;
 
@@ -617,7 +599,6 @@
             };
         });
 
-        // TÁBLÁZAT KITÖLTÉSE (FŐ ÖSSZESÍTÉS)
         for (const id in aggregatedData) {
             const data = aggregatedData[id];
             
@@ -641,33 +622,27 @@
         detailedBody.innerHTML = '';
         
         let filteredLogCount = 0;
-        let totalFilteredHours = 0;
+
+        window.filteredDetailedLog = []; // Az exportálható lista
 
         detailedLog.forEach(log => {
             const logDate = parseHungarianTimestamp(log.checkIn);
             if (!logDate) return;
 
-            // Egység szűrés
             if (selectedUnitCode !== 'ALL' && EMPLOYEE_MAP[log.id].unit !== selectedUnitCode) {
                 return;
             }
 
-            // Dátum szűrés
             if (filterStartDate && logDate.getTime() < filterStartDate.getTime()) {
                 return;
             }
             if (filterEndDate && logDate.getTime() > filterEndDate.getTime()) {
-                // Megjegyzés: Ha a munkamenet áthúzódik a filterEndDate utánra,
-                // de a checkIn beleesik a tartományba, itt nem szűrjük ki.
+                return;
             }
             
             // Szűrt adatok mentése CSV exportra
+            window.filteredDetailedLog.push(log);
             filteredLogCount++;
-            if (!log.isActive) {
-                 totalFilteredHours += log.durationHours;
-            } else {
-                 // Az aktív munkamenet óráit nem számoljuk bele a lezárt összes órába
-            }
             
             const row = detailedBody.insertRow();
             if (log.isActive) {
@@ -676,7 +651,7 @@
 
             const datePart = log.checkIn.substring(0, 10);
             const checkInTime = log.checkIn.substring(12);
-            const checkOutTime = log.checkOut === 'AKTUÁLISAN BEJELENTKEZVE' ? log.checkOut : log.checkOut.substring(12);
+            const checkOutTime = log.checkOut === 'AKTUÁLISAN BEJELENTKEZVE' ? 'AKTUÁLIS' : log.checkOut.substring(12);
             
             row.insertCell().textContent = datePart;
             row.insertCell().textContent = log.name;
@@ -707,28 +682,6 @@
             cell.style.textAlign = 'center';
             cell.style.fontStyle = 'italic';
         }
-        
-        // Események exportálásához tároljuk a szűrt naplót
-        window.filteredDetailedLog = detailedLog.filter(log => {
-            const logDate = parseHungarianTimestamp(log.checkIn);
-            if (!logDate) return false;
-
-            // Egység szűrés
-            if (selectedUnitCode !== 'ALL' && EMPLOYEE_MAP[log.id].unit !== selectedUnitCode) {
-                return false;
-            }
-
-            // Dátum szűrés
-            if (filterStartDate && logDate.getTime() < filterStartDate.getTime()) {
-                return false;
-            }
-            if (filterEndDate && logDate.getTime() > filterEndDate.getTime()) {
-                // A checkIn-nek kell a dátumtartományban lennie
-                return false;
-            }
-            return true;
-        });
-
     }
 
     // --- CSV EXPORT ---
@@ -739,14 +692,14 @@
             return;
         }
 
-        let csv = 'Dátum;Dolgozó;Egység;Bejelentkezés ideje;Kijelentkezés ideje;Munkamenet Idő;Státusz;Munkamenet Idő (óra tizedes)\n';
+        let csv = 'Dátum;Dolgozó;Egység;Bejelentkezés ideje;Kijelentkezés ideje;Munkamenet Idő (HH:MM:SS);Státusz;Munkamenet Idő (óra tizedes)\n';
 
         window.filteredDetailedLog.forEach(log => {
             const datePart = log.checkIn.substring(0, 10);
             const checkInTime = log.checkIn.substring(12);
             const checkOutTime = log.checkOut === 'AKTUÁLISAN BEJELENTKEZVE' ? 'AKTÍV' : log.checkOut.substring(12);
             const status = log.isActive ? 'Aktív' : 'Lezárva';
-            const durationHours = log.isActive ? 'AKTÍV' : log.durationHours.toFixed(4).replace('.', ','); // CSV-ben a vessző az elválasztó
+            const durationHours = log.isActive ? 'AKTÍV' : log.durationHours.toFixed(4).replace('.', ','); 
             
             csv += `${datePart};"${log.name}";${log.unit};${checkInTime};${checkOutTime};${log.durationStr};${status};${durationHours}\n`;
         });
@@ -757,7 +710,6 @@
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
             
-            // Dátum formázása fájlnévhez
             const today = new Date().toLocaleDateString('hu-HU').replace(/\. /g, '-').replace(/\.$/g, '');
             link.setAttribute("download", `munkaido-naplo-admin-${today}.csv`);
             
@@ -787,6 +739,14 @@
         alert('Az összes munkaidő esemény törölve a helyi tárolóból!');
         updateAdminPanel();
     }
+    
+    // ESC gomb a modális bezárására
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeResetModal();
+        }
+    });
+
 </script>
 
 </body>
