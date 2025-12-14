@@ -366,6 +366,7 @@
         <div class="selection-box">
             <h2>Egység és Név Kiválasztása</h2>
             
+            <form id="checkinForm">
                 
                 <label for="citySelect">Egység/Város:</label>
                 <select id="citySelect" name="Egység" onchange="populateEmployees(); updateEmployeeInfo();">
@@ -377,12 +378,7 @@
                     <option value="">-- Válassza ki a nevét --</option>
                 </select>
                 
-                <input type="hidden" name="_subject" value="Új Munkamenet Rögzítése!">
-                <input type="hidden" name="Helykód_QR" id="qrCodeInput" value="NINCS_QR_KOD">
-                <input type="hidden" name="Típus" id="checkTypeInput" value="">
-                <input type="hidden" name="Időpont" id="timestampInput" value="">
-            
-            </form>
+                </form>
             <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 20px 0;">
             
             <div class="list-item"><span class="check">✓</span> <label>Munkavégzés kezdete</label></div>
@@ -443,7 +439,7 @@
     const MANAGER_PASSWORD = 'admin123'; 
     
     const RESTAURANT_LOCATIONS = {
-        'EGE': { name: 'Eger', lat: 47.9072155, lon: 20.3880078 },
+        'EGE': { name: 'Eger', lat: 47.8986, lon: 20.3756 },
         'PAK': { name: 'Pákozd/M7', lat: 47.1685, lon: 18.5995 },
         'ALLEE': { name: 'Allee', lat: 47.4725, lon: 19.0498 }, 
         'VES': { name: 'Veszprém', lat: 47.0945, lon: 17.9069 },
@@ -452,8 +448,7 @@
     
     const MAX_DISTANCE_M = 100; // 100 méteres távolságon belül kell lennie
     
-    // A Formsubmit-re küldés miatt a localStorage mentéseket kivettük.
-    // Az admin.html-hez később egy új, API alapú adatlekérdezést kell majd beállítani.
+    // A Formsubmit eltávolítása miatt az admin.html funkcióját újra kell gondolni.
     
     const MALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
     const FEMALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-4 7h8v-1H8v1zM11 15h2v2h-2v-2z"/></svg>';
@@ -515,8 +510,7 @@
         
         if (enteredPassword === MANAGER_PASSWORD) {
             hideModal();
-            // Mivel az admin.html már nem tudja a LocalStorage-ból kiolvasni az adatokat,
-            // ezt a részt később módosítani kell majd egy API alapú lekérdezésre.
+            // Mivel nincs távoli adatrögzítés, az admin.html-nek is üresnek kell lennie, vagy lokális adatrögzítést kell használnia.
             window.open('admin.html', '_blank'); 
         } else {
             errorDiv.textContent = "❌ Helytelen jelszó! Próbálja újra.";
@@ -610,7 +604,6 @@
         const displayDiv = document.getElementById('employeeDisplay');
         const selectedId = employeeSelect.value;
         
-        // Mivel a Formsubmit nem tárolja az aktív munkameneteket, ezt az állapotot nem ellenőrizzük
         
         if (selectedId && EMPLOYEE_MAP[selectedId]) {
             const data = EMPLOYEE_MAP[selectedId];
@@ -644,12 +637,9 @@
         statusDiv.style.opacity = '1.0';
     }
     
-    // --- BEJELENTKEZÉS / KIJELENTKEZÉS FÜGGVÉNY (AZ ŰRLAP ELKÜLDÉSE) ---
+    // --- BEJELENTKEZÉS / KIJELENTKEZÉS FÜGGVÉNY (NINCS MÁR TÁVOLI KÜLDÉS) ---
     function checkInSubmit(type) {
         const selectedId = document.getElementById('employeeSelect').value;
-        const form = document.getElementById('checkinForm');
-        const checkTypeInput = document.getElementById('checkTypeInput');
-        const timestampInput = document.getElementById('timestampInput');
         
         if (!selectedId || !EMPLOYEE_MAP[selectedId]) {
             updateStatus("HIBA: Válasszon dolgozót!", 'error');
@@ -672,16 +662,14 @@
                     
                     if (distance <= MAX_DISTANCE_M) {
                         const now = new Date();
+                        const timestamp = now.toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
                         
-                        // 1. Kitöltjük a rejtett mezőket az adatokkal
-                        checkTypeInput.value = type; // 'BEJELENTKEZÉS' vagy 'KIJELENTKEZÉS'
-                        timestampInput.value = now.toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
+                        // *** ITT HIÁNYZIK AZ ADATMENTÉS ***
+                        // A Formsubmit elhagyásával most nincs hova menteni az adatot. 
+                        // Itt kellene újra bevezetni a localStorage-t, vagy más mentési logikát.
                         
-                        // 2. Form elküldése a Formsubmitnek!
-                        form.submit();
-                        
-                        // 3. Visszajelzés (a Formsubmit átirányít, de ez is hasznos)
-                        updateStatus(`✅ SIKERES! Adatok küldése: ${type}. Távolság: ${distance.toFixed(1)} m.`, 'success');
+                        // Ideiglenes visszajelzés
+                        updateStatus(`✅ SIKERES ${type}! Távolság: ${distance.toFixed(1)} m. (Adatok NINCSENEK mentve!)`, 'success');
 
                     } else {
                         updateStatus(`HIBA! Távolság: ${distance.toFixed(1)} m. Nem tartózkodik a ${targetLocation.name} egység közelében.`, 'error');
@@ -699,15 +687,9 @@
 
 
     document.addEventListener('DOMContentLoaded', () => {
-        // A QR-kód beolvasása az URL-ből és a rejtett mezőbe írása
-        const qrCodeInput = document.getElementById('qrCodeInput');
-        if (qrCodeInput) {
-            if (urlQrCode) {
-                qrCodeInput.value = urlQrCode;
-                updateStatus(`QR Kód beolvasva: ${urlQrCode}. Válasszon dolgozót.`, 'info');
-            } else {
-                qrCodeInput.value = 'MANUÁLIS_BELÉPÉS'; 
-            }
+        // Mivel nincs adatkísérő mező, csak a QR kódot olvassuk ki és jelezzük
+        if (urlQrCode) {
+            updateStatus(`QR Kód beolvasva: ${urlQrCode}. Válasszon dolgozót.`, 'info');
         }
         
         populateCities();
@@ -718,8 +700,4 @@
 </script>
 
 </body>
-
 </html>
-
-
-
