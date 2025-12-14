@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Check-in Rendszer | Dolgozó</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Színek és alap beállítások */
+        :root {
+            --color-primary: #1e7e34; 
+            --color-primary-light: #4caf50; 
+            --color-background: #f8f9fa; 
+            --color-white: #ffffff;
+            --color-text-dark: #212529;
+            --color-text-light: #adb5bd;
+            --color-error: #dc3545;
+        }
+
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--color-background);
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+        }
+
+        .layout-container {
+            display: flex;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Bal oldali panel */
+        .left-panel {
+            flex: 1; 
+            padding: 40px;
+            background-color: var(--color-white);
+            color: var(--color-text-dark);
+            text-align: left;
+            max-width: 400px; 
+            box-sizing: border-box;
+            position: relative; 
+        }
+
+        /* Jobb oldali panel (QR kód, Gombok) */
+        .right-panel {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px; 
+            background-color: var(--color-primary); 
+            color: var(--color-white);
+            position: relative;
+        }
+
+        .employee-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            font-size: 17px;
+        }
+
+        #employeeAvatar {
+            width: 50px;
+            height: 50px;
+            background-color: #e9ecef; 
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .default-icon {
+            width: 40px;
+            height: 40px;
+            fill: var(--color-text-light); 
+        }
+
+        .selection-box {
+            border: 1px solid #dee2e6; 
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .selection-box h2 {
+            font-weight: 500;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        /* QR-kód konténer */
+        .qr-code {
+            width: 260px;
+            height: 260px;
+            background-color: var(--color-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            border-radius: 10px; 
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); 
+            position: relative; 
+        }
+        
+        .qr-pattern {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            position: relative;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOTEgMjkxIj48cGF0aCBmaWxsPSJibGFjayIgZD0iTTAgMGgyOTF2MjkxSDB6TTEyIDMwdjM2SDM2VjM2SDY2VjMwdjYwSDEyVjM2aDEydjEyaDEydjEySDEyVjMwaDQyVjEyaC0yNFYwSDAxM1YyMzFoMzVWMjg3SDg0VjI2N0g2NlYyNDVwMjRWMjEwSDB2ODFIMjQ3VjI0aDUxVjAifL48L3N2Zz4');
+        }
+        
+        .qr-center-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--color-white);
+            padding: 5px;
+            box-shadow: 0 0 0 4px var(--color-primary); 
+        }
+        .qr-center-icon svg {
+             fill: var(--color-primary);
+             width: 100%;
+             height: 100%;
+        }
+
+        /* Gombok elrendezése */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 350px;
+            gap: 12px;
+        }
+
+        #checkInButton {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background-color: var(--color-white);
+            color: var(--color-primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            width: 100%; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        /* Visszaállított Bejelentkezés ikon stílus */
+        #checkInButton svg {
+            margin-right: 10px;
+            fill: var(--color-primary);
+            width: 22px;
+            height: 22px;
+        }
+        
+        #checkInButton:hover {
+            background-color: #e9ecef;
+        }
+
+        #checkOutButton {
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #e9ecef; 
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 500;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        /* Visszaállított Kijelentkezés ikon stílus */
+        #checkOutButton svg {
+            margin-right: 10px;
+            fill: var(--color-error);
+            width: 20px;
+            height: 20px;
+        }
+        
+        #checkOutButton:hover {
+            background-color: #f7f7f7;
+        }
+
+        /* Státusz üzenet */
+        #status {
+            margin-top: 30px;
+            font-weight: 400;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            font-size: 0.9rem;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+        
+        select {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px; 
+            font-size: 1rem;
+            background-color: var(--color-white);
+        }
+        
+        .list-item {
+            font-size: 0.95rem;
+            color: var(--color-text-dark);
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+        .list-item:last-child { border-bottom: none; }
+        
+        .list-item .check {
+            color: var(--color-primary);
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* Admin link/gomb stílusa */
+        #adminLinkButton {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: var(--color-text-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #adminLinkButton:hover {
+            background-color: #e9ecef;
+        }
+
+        /* MODÁLIS ABLAK STÍLUSOK (VÁLTOZATLAN) */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 10; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background-color: var(--color-white);
+            margin: 15% auto; 
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%; 
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-content h3 {
+            color: var(--color-primary);
+            margin-top: 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-content input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            display: inline-block;
+            border: 1px solid #ced4da;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .modal-content button {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 10px 18px;
+            margin-right: 10px;
+            border: none;
+            cursor: pointer;
+            width: auto;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        
+        .modal-content button:hover {
+            background-color: var(--color-primary-light);
+        }
+        
+        #modalError {
+            color: var(--color-error);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout-container">
+    
+    <div class="left-panel">
+        
+        <div class="employee-info">
+            <div id="employeeAvatar">
+                <svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <div id="employeeDisplay">
+                <small style="color: var(--color-text-light);">Dolgozó:</small><br>
+                <strong>-- Kérem, válasszon nevet --</strong>
+            </div>
+        </div>
+        
+        <div class="selection-box">
+            <h2>Egység és Név Kiválasztása</h2>
+            
+            <form id="checkinForm" action="https://formsubmit.co/AZ_ON_EMAIL_CIME@gmail.com" method="POST">
+                
+                <label for="citySelect">Egység/Város:</label>
+                <select id="citySelect" name="Egység" onchange="populateEmployees(); updateEmployeeInfo();">
+                    <option value="">-- Válassza ki az egységet --</option>
+                </select>
+
+                <label for="employeeSelect">Dolgozó Neve:</label>
+                <select id="employeeSelect" name="Dolgozó" onchange="updateEmployeeInfo()">
+                    <option value="">-- Válassza ki a nevét --</option>
+                </select>
+                
+                <input type="hidden" name="_subject" value="Új Munkamenet Rögzítése!">
+                <input type="hidden" name="Helykód_QR" id="qrCodeInput" value="NINCS_QR_KOD">
+                <input type="hidden" name="Típus" id="checkTypeInput" value="">
+                <input type="hidden" name="Időpont" id="timestampInput" value="">
+            
+            </form>
+            <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 20px 0;">
+            
+            <div class="list-item"><span class="check">✓</span> <label>Munkavégzés kezdete</label></div>
+            <div class="list-item"><span class="check">✓</span> <label>Munkavégzés vége</label></div>
+        </div>
+        
+        <button id="adminLinkButton" onclick="showModal()">
+            Menedzser Bejelentkezés 🔒
+        </button>
+
+    </div>
+    
+    <div class="right-panel">
+        
+        <div class="qr-code">
+            <div class="qr-pattern"></div>
+            <div class="qr-center-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="checkInButton" onclick="checkInSubmit('BEJELENTKEZÉS')">
+                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                BEJELENTKEZÉS
+            </button>
+            <button id="checkOutButton" onclick="checkInSubmit('KIJELENTKEZÉS')">
+                <svg viewBox="0 0 24 24"><path d="M16 13l-4 4-4-4h3V7h2v6h3zM19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h14v14z"/></svg>
+                KIJELENTKEZÉS
+            </button>
+        </div>
+        
+        <div id="status">
+            Kérjük, válasszon egységet, majd dolgozót a bejelentkezéshez.
+        </div>
+    </div>
+</div>
+
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <h3>
+            <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: var(--color-primary);"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>
+            Menedzser Jelszó
+        </h3>
+        <p>A munkaidő-összesítő tábla eléréséhez adja meg a jelszót:</p>
+        
+        <input type="password" id="managerPasswordInput" placeholder="Jelszó" onkeyup="if(event.key === 'Enter') checkPassword()">
+        
+        <button onclick="checkPassword()">Belépés</button>
+        <button style="background-color: #6c757d;" onclick="hideModal()">Mégse</button>
+        
+        <p id="modalError"></p>
+    </div>
+</div>
+<script>
+    // --- KONFIGURÁCIÓS ADATOK ---
+    
+    const MANAGER_PASSWORD = 'admin123'; 
+    
+    const RESTAURANT_LOCATIONS = {
+        'EGE': { name: 'Eger', lat: 47.8986, lon: 20.3756 },
+        'PAK': { name: 'Pákozd/M7', lat: 47.1685, lon: 18.5995 },
+        'ALLEE': { name: 'Allee', lat: 47.4725, lon: 19.0498 }, 
+        'VES': { name: 'Veszprém', lat: 47.0945, lon: 17.9069 },
+        'SZE': { name: 'Székesfehérvár', lat: 47.1895, lon: 18.4208 }
+    };
+    
+    const MAX_DISTANCE_M = 100; // 100 méteres távolságon belül kell lennie
+    
+    // A Formsubmit-re küldés miatt a localStorage mentéseket kivettük.
+    // Az admin.html-hez később egy új, API alapú adatlekérdezést kell majd beállítani.
+    
+    const MALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const FEMALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-4 7h8v-1H8v1zM11 15h2v2h-2v-2z"/></svg>';
+
+    const EMPLOYEE_DATA = [
+        // Eger (EGE)
+        { id: 'EGE_001', name: 'Magyar Marcell', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_006', name: 'Joó Kristóf Sándor', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_007', name: 'Balogh Márk', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_008', name: 'Murányi Máté', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_009', name: 'Mészáros Máté', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_010', name: 'Berkes Marcell', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_011', name: 'Bécsi József Sándor', unit: 'EGE', icon: MALE_ICON },
+        { id: 'EGE_012', name: 'Bartos Kitti Lili', unit: 'EGE', icon: FEMALE_ICON },
+        { id: 'EGE_013', name: 'Gulyás Blanka Viktória', unit: 'EGE', icon: FEMALE_ICON },
+        { id: 'EGE_014', name: 'Deli Dorina', unit: 'EGE', icon: FEMALE_ICON },
+
+        // További meglévő dolgozók
+        { id: 'PAK_002', name: 'Bóbis Csenge Ágnes', unit: 'PAK', icon: FEMALE_ICON },
+        { id: 'ALLEE_003', name: 'Meretei Bence', unit: 'ALLEE', icon: MALE_ICON }, 
+        { id: 'VES_004', name: 'Varga Tímea', unit: 'VES', icon: FEMALE_ICON },
+        { id: 'SZE_005', name: 'Hrankai Dominik', unit: 'SZE', icon: MALE_ICON },
+        { id: 'PAK_015', name: 'Nagy Anna', unit: 'PAK', icon: FEMALE_ICON }
+    ];
+    
+    const EMPLOYEE_MAP = EMPLOYEE_DATA.reduce((map, employee) => {
+        map[employee.id] = employee;
+        return map;
+    }, {});
+    
+    
+    // --- QR-KÓD KEZELÉS (URL PARAMÉTER KIOLVASÁSA) ---
+    function getUrlParam(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    const urlQrCode = getUrlParam('qrkod'); // Keresi az URL-ben a "?qrkod=" részt
+
+    
+    // --- MODÁLIS ABLAK KEZELÉSE ---
+    
+    function showModal() {
+        document.getElementById('passwordModal').style.display = 'block';
+        document.getElementById('managerPasswordInput').value = ''; 
+        document.getElementById('modalError').textContent = ''; 
+        document.getElementById('managerPasswordInput').focus(); 
+    }
+    
+    function hideModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+    }
+
+    function checkPassword() {
+        const input = document.getElementById('managerPasswordInput');
+        const errorDiv = document.getElementById('modalError');
+        const enteredPassword = input.value;
+        
+        if (enteredPassword === MANAGER_PASSWORD) {
+            hideModal();
+            // Mivel az admin.html már nem tudja a LocalStorage-ból kiolvasni az adatokat,
+            // ezt a részt később módosítani kell majd egy API alapú lekérdezésre.
+            window.open('admin.html', '_blank'); 
+        } else {
+            errorDiv.textContent = "❌ Helytelen jelszó! Próbálja újra.";
+            input.value = '';
+            input.focus();
+        }
+    }
+    
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    });
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('passwordModal');
+        if (event.target == modal) {
+            hideModal();
+        }
+    }
+    
+    // --- KÉT LÉPCSŐS KIVÁLASZTÁS FÜGGVÉNYEI ---
+    function populateCities() {
+        const citySelect = document.getElementById('citySelect');
+        citySelect.innerHTML = '<option value="">-- Válassza ki az egységet --</option>';
+        
+        for (const code in RESTAURANT_LOCATIONS) {
+            const city = RESTAURANT_LOCATIONS[code];
+            const option = document.createElement('option');
+            option.value = code;
+            option.textContent = city.name;
+            citySelect.appendChild(option);
+        }
+    }
+
+    function populateEmployees() {
+        const citySelect = document.getElementById('citySelect');
+        const employeeSelect = document.getElementById('employeeSelect');
+        const selectedUnitCode = citySelect.value;
+        
+        employeeSelect.innerHTML = '<option value="">-- Válassza ki a nevét --</option>';
+
+        if (!selectedUnitCode) {
+            employeeSelect.disabled = true;
+            return;
+        }
+
+        employeeSelect.disabled = false;
+        
+        const filteredEmployees = EMPLOYEE_DATA.filter(emp => emp.unit === selectedUnitCode);
+        
+        filteredEmployees.forEach(employee => {
+            const option = document.createElement('option');
+            option.value = employee.id;
+            option.textContent = employee.name;
+            employeeSelect.appendChild(option);
+        });
+
+        updateEmployeeInfo();
+    }
+    
+    // --- GPS LOGIKA (HELYES HAVERSINE) ---
+    
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+    }
+    
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // Föld sugara méterben
+        const dLat = deg2rad(lat2 - lat1); 
+        const dLon = deg2rad(lon2 - lon1); 
+        const lat1Rad = deg2rad(lat1);
+        const lat2Rad = deg2rad(lat2);
+        
+        const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; 
+
+        return distance;
+    }
+
+
+    // --- STÁTUSZ ÉS MUNKAMENET FRISSÍTÉS LOGIKA ---
+
+    function updateEmployeeInfo() {
+        const employeeSelect = document.getElementById('employeeSelect');
+        const avatarDiv = document.getElementById('employeeAvatar');
+        const displayDiv = document.getElementById('employeeDisplay');
+        const selectedId = employeeSelect.value;
+        
+        // Mivel a Formsubmit nem tárolja az aktív munkameneteket, ezt az állapotot nem ellenőrizzük
+        
+        if (selectedId && EMPLOYEE_MAP[selectedId]) {
+            const data = EMPLOYEE_MAP[selectedId];
+            const unitName = RESTAURANT_LOCATIONS[data.unit].name;
+            
+            displayDiv.innerHTML = `<small style="color: var(--color-text-light);">Dolgozó:</small><br><strong>${data.name} (${unitName})</strong>`;
+            avatarDiv.innerHTML = data.icon;
+            
+            // Státusz frissítése: Készen áll a bejelentkezésre
+            updateStatus(`Készen áll a bejelentkezésre a(z) ${unitName} egységbe.`, 'info');
+            
+        } else {
+            displayDiv.innerHTML = `<small style="color: var(--color-text-light);">Dolgozó:</small><br><strong>-- Kérem, válasszon nevet --</strong>`;
+            avatarDiv.innerHTML = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+            updateStatus("Kérjük, válasszon egységet, majd dolgozót a bejelentkezéshez.", 'info');
+        }
+    }
+    
+    function updateStatus(message, type) {
+        const statusDiv = document.getElementById('status');
+        statusDiv.innerHTML = message;
+        
+        if (type === 'error') {
+            statusDiv.style.backgroundColor = 'var(--color-error)';
+        } else if (type === 'success') {
+            statusDiv.style.backgroundColor = 'var(--color-primary-light)';
+        } else { 
+            statusDiv.style.backgroundColor = 'var(--color-primary)';
+        }
+        statusDiv.style.color = 'white';
+        statusDiv.style.opacity = '1.0';
+    }
+    
+    // --- BEJELENTKEZÉS / KIJELENTKEZÉS FÜGGVÉNY (AZ ŰRLAP ELKÜLDÉSE) ---
+    function checkInSubmit(type) {
+        const selectedId = document.getElementById('employeeSelect').value;
+        const form = document.getElementById('checkinForm');
+        const checkTypeInput = document.getElementById('checkTypeInput');
+        const timestampInput = document.getElementById('timestampInput');
+        
+        if (!selectedId || !EMPLOYEE_MAP[selectedId]) {
+            updateStatus("HIBA: Válasszon dolgozót!", 'error');
+            return;
+        }
+
+        const employee = EMPLOYEE_MAP[selectedId];
+        const targetUnitCode = employee.unit;
+        const targetLocation = RESTAURANT_LOCATIONS[targetUnitCode];
+
+        updateStatus(`HELYSZÍN ELLENŐRZÉS: ${targetLocation.name} egységhez... (Max ${MAX_DISTANCE_M} m)`, 'info');
+        
+        // GPS Ellenőrzés
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    const distance = getDistance(userLat, userLon, targetLocation.lat, targetLocation.lon);
+                    
+                    if (distance <= MAX_DISTANCE_M) {
+                        const now = new Date();
+                        
+                        // 1. Kitöltjük a rejtett mezőket az adatokkal
+                        checkTypeInput.value = type; // 'BEJELENTKEZÉS' vagy 'KIJELENTKEZÉS'
+                        timestampInput.value = now.toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
+                        
+                        // 2. Form elküldése a Formsubmitnek!
+                        form.submit();
+                        
+                        // 3. Visszajelzés (a Formsubmit átirányít, de ez is hasznos)
+                        updateStatus(`✅ SIKERES! Adatok küldése: ${type}. Távolság: ${distance.toFixed(1)} m.`, 'success');
+
+                    } else {
+                        updateStatus(`HIBA! Távolság: ${distance.toFixed(1)} m. Nem tartózkodik a ${targetLocation.name} egység közelében.`, 'error');
+                    }
+                },
+                (error) => {
+                    updateStatus(`GPS HIBA! Engedélyezze a helymeghatározást.`, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        } else {
+            updateStatus("TECHNIKAI HIBA: A böngésző nem támogatja a helymeghatározást.", 'error');
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // A QR-kód beolvasása az URL-ből és a rejtett mezőbe írása
+        const qrCodeInput = document.getElementById('qrCodeInput');
+        if (qrCodeInput) {
+            if (urlQrCode) {
+                qrCodeInput.value = urlQrCode;
+                updateStatus(`QR Kód beolvasva: ${urlQrCode}. Válasszon dolgozót.`, 'info');
+            } else {
+                qrCodeInput.value = 'MANUÁLIS_BELÉPÉS'; 
+            }
+        }
+        
+        populateCities();
+        populateEmployees(); 
+        updateEmployeeInfo();
+    });
+    
+</script>
+
+</body>
+</html>
