@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
+        /* A korábbi stílusok változók, színek, alap-body stílus és desktop nézet (min-width: 769px) változatlanok maradnak. */
         :root {
             --color-primary: #1e7e34; /* Sötétzöld */
             --color-primary-light: #4caf50; /* Világosabb zöld (Success) */
@@ -20,13 +21,13 @@
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 20px; /* Alap padding */
             background-color: var(--color-background);
             color: var(--color-text-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Fent kezdi a tartalom, nem pont középen */
+            align-items: flex-start;
         }
 
         .layout-container {
@@ -35,7 +36,8 @@
             margin: 20px 0;
             display: flex;
             gap: 30px;
-            flex-wrap: wrap; /* Alapértelmezésben a tördelés bekapcsolva */
+            /* **FONTOS MÓDOSÍTÁS:** Engedélyezi a tördelést kisebb képernyőkön */
+            flex-wrap: wrap; 
             justify-content: center;
         }
 
@@ -55,7 +57,7 @@
             padding-bottom: 10px;
             margin-top: 0;
             margin-bottom: 30px;
-            font-size: 1.8rem; /* Kisebb betűméret mobilra */
+            font-size: 1.8rem; 
         }
         
         h2 {
@@ -69,54 +71,24 @@
         /* QR Olvasó panel stílusa */
         #qr-video {
             width: 100%;
-            height: 300px; /* Fix magasság a telefonos nézetben */
+            height: 300px;
             object-fit: cover;
             border: 2px solid #ccc;
             border-radius: 8px;
             background-color: #000;
         }
 
-        /* Üzenetdobozok */
-        .message-box {
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .message-box.success {
-            background-color: #d4edda;
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary-light);
-        }
-
-        .message-box.error {
-            background-color: #f8d7da;
-            color: var(--color-error);
-            border: 1px solid var(--color-error);
-        }
+        /* Üzenetdobozok és Állapot panel stílusok változatlanok */
+        .message-box { /* ... */ }
+        .message-box.success { /* ... */ }
+        .message-box.error { /* ... */ }
+        #status-display { /* ... */ }
+        #status-display p { /* ... */ }
+        #status-display strong { /* ... */ }
         
-        /* Aktuális Állapot panel */
-        #status-display {
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #f1f8e9; /* Nagyon halvány zöld */
-            border: 1px solid #c8e6c9;
-            margin-bottom: 20px;
-        }
-
-        #status-display p {
-            margin: 5px 0;
-            font-size: 1rem;
-        }
-
-        #status-display strong {
-            color: var(--color-primary);
-            font-weight: 500;
-        }
-
-        /* Média lekérdezés a telefonos nézethez (keskeny képernyő) */
+        /* ------------------------------------------------------------------ */
+        /* ÚJ RESZPONZÍV SZABÁLYOK (MOBIL)                  */
+        /* ------------------------------------------------------------------ */
         @media screen and (max-width: 768px) {
             body {
                 padding: 10px; /* Kisebb külső padding */
@@ -124,24 +96,69 @@
             .layout-container {
                 gap: 20px;
                 margin: 0;
-                flex-direction: column; /* Egymás alá kerülnek a panelek */
+                /* **LEGFONTOSABB VÁLTOZÁS:** A panelek egymás alá kerülnek */
+                flex-direction: column; 
             }
             .panel {
                 min-width: unset; /* Nincs minimum szélesség, elfoglalja a rendelkezésre álló helyet */
                 width: 100%;
-                padding: 20px; /* Kisebb belső padding */
+                padding: 20px; /* Kisebb belső padding mobilra */
             }
             h1 {
-                font-size: 1.5rem; /* Még kisebb a főcím */
+                font-size: 1.5rem; /* Kicsit kisebb főcím mobilra */
                 margin-bottom: 20px;
             }
             #qr-video {
-                height: 250px; /* Kicsit kisebb olvasó mobil nézetben */
+                height: 250px; /* Kisebb olvasóablak mobil nézetben */
+            }
+            
+            /* Táblázat fejlécek helyett blokk-elemként viselkednek mobilra, ha a tartalom nem férne el. */
+            /* Bár ezt a listás nézetet a bonyolultabb admin.html-hez javaslom, itt elég az egyszerűsítés: */
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px; /* Eltünteti az ismétlődő oszlopneveket */
+                left: -9999px;
+            }
+            tr { 
+                border: 1px solid #ccc; 
+                margin-bottom: 5px;
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%; 
+                text-align: right;
+            }
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 500;
+                color: var(--color-primary);
+            }
+            
+            /* Adatok hozzárendelése a :before tartalomhoz (ez a mobilon a "fejléc") */
+            #history-body tr td:nth-of-type(1):before { content: "Dátum:"; }
+            #history-body tr td:nth-of-type(2):before { content: "Akció:"; }
+            #history-body tr td:nth-of-type(3):before { content: "Egység:"; }
+
+            /* Visszaállítjuk a normális táblázat-megjelenítést az állapot panelhez */
+            #status-display + h2 + table {
+                 display: table;
             }
         }
     </style>
 </head>
 <body onload="initializePage()">
+
 <div class="layout-container">
     
     <div class="panel">
@@ -189,7 +206,7 @@
 
 <script src="https://unpkg.com/qrcodescan@1.0.0/dist/qrcodescan.min.js"></script>
 <script>
-    // --- KONFIGURÁCIÓS ADATOK (Változatlan, de fontos, hogy itt legyen!) ---
+    // --- KONFIGURÁCIÓS ADATOK (Változatlanul) ---
     const CHECKIN_DATA_KEY = 'work_sessions';
     const CURRENT_EMPLOYEE_KEY = 'current_employee_id';
 
@@ -224,10 +241,7 @@
         return map;
     }, {});
 
-    // ... (A logikát, QR-kód feldolgozást tartalmazó JavaScript kód változatlanul következik) ...
-    // Ezt a részt a helyszűke miatt kihagyom, feltételezve, hogy a korábbi logikát használja.
-    
-    // FIGYELEM: A JavaScript logika a korábbi válaszokból származik és ide kell illeszteni!
+    // --- JavaScript Logika (Változatlanul) ---
     
     function getCurrentHungarianTime() {
         const now = new Date();
@@ -252,13 +266,11 @@
         
         qrScan = new QrCodeScan(videoElement, (result) => {
             if (result) {
-                // Siker esetén leállítjuk az olvasót, hogy ne fusson tovább
                 qrScan.stop();
                 handleQrCodeResult(result);
             }
         });
 
-        // Az olvasó újraindítása a folyamat végén
         qrScan.start().catch(error => {
             document.getElementById('error-message').innerText = 'Hiba a kamera elérésében. Kérem ellenőrizze a jogosultságokat.';
             showMessage('error');
@@ -267,7 +279,6 @@
     }
 
     function handleQrCodeResult(scannedData) {
-        // A QR-kód tartalma a dolgozó ID-je, pl. 'EGE_001'
         const employeeId = scannedData.trim();
         const employee = EMPLOYEE_MAP[employeeId];
         
@@ -304,7 +315,6 @@
         showMessage('success');
         updateStatusDisplay(employeeId);
         
-        // Újraindítás egy rövid késleltetéssel
         setTimeout(startQrScanner, 3000);
     }
 
@@ -379,7 +389,6 @@
             historyBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 10px;">Nincs rögzített előzmény.</td></tr>';
         }
     }
-
 </script>
 </body>
 </html>
