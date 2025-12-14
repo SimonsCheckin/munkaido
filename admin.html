@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ADMIN STÍLUSOK (A RÉSZLETES NAPLÓ FEJLÉCE VISSZAÁLLÍTVA AZ EREDETIRE) */
+        /* ADMIN STÍLUSOK */
         :root {
             --color-primary: #1e7e34; 
             --color-background: #f8f9fa; 
@@ -25,7 +25,7 @@
         body { 
             font-family: 'Roboto', sans-serif; 
             margin: 0; 
-            padding: 40px; 
+            padding: 20px; /* Alap padding csökkentve */
             background-color: var(--color-background);
             color: var(--color-text-dark);
         }
@@ -50,6 +50,13 @@
             display: flex;
             justify-content: space-between; 
             align-items: center;
+            flex-wrap: wrap; /* Mobilon engedi a törést */
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
         }
 
         /* Szűrési vezérlő stílusa */
@@ -69,6 +76,14 @@
             flex: 1;
             min-width: 200px;
         }
+        
+        /* MOBIL JAVÍTÁS: Szűrők 100%-os szélessége */
+        @media (max-width: 600px) {
+            .filter-group {
+                min-width: 100%;
+            }
+        }
+
 
         .filter-control label {
             font-weight: 500;
@@ -96,12 +111,11 @@
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #e9ecef;
+            flex-wrap: wrap; /* Mobilon engedi a törést */
         }
-
-        /* EXPORT GOMB STÍLUS */
-        #exportCsvButton {
-            background-color: #007bff; 
-            color: var(--color-white);
+        
+        /* GOMB STÍLUSOK */
+        #exportCsvButton, #resetHoursButton {
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
@@ -112,45 +126,79 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            margin-top: 10px; /* Mobilon szeparálás */
+        }
+
+        #exportCsvButton {
+            background-color: #007bff; 
+            color: var(--color-white);
         }
         
         #exportCsvButton:hover {
             background-color: #0056b3; 
         }
 
-
-        /* Óraszámok Nullázása gomb stílusa */
         #resetHoursButton {
             background-color: var(--color-error); 
             color: var(--color-white);
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
         #resetHoursButton:hover {
             background-color: #c82333; 
         }
 
-        /* Táblázat stílusok */
-        .admin-table {
+        /* Mobilon a cím mellett a gombok egymás alatt */
+        @media (max-width: 700px) {
+             h1 {
+                 flex-direction: column;
+                 align-items: flex-start;
+             }
+             h1 span {
+                 font-size: 1.8rem;
+                 margin-bottom: 10px;
+             }
+             #resetHoursButton {
+                 margin-left: 0;
+             }
+             
+             .log-header {
+                 flex-direction: column;
+                 align-items: flex-start;
+             }
+             .log-header h2 {
+                 margin-bottom: 0;
+             }
+        }
+        
+        
+        /* A TÁBLÁZATOK BEÁLLÍTÁSA RESZPONZÍV GÖRGETÉSRE */
+        .table-wrapper {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
+            overflow-x: auto; /* Ez a lényeg! */
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* árnyék a görgetéshez */
+            border-radius: 8px;
             margin-top: 20px;
         }
 
+        .admin-table {
+            min-width: 800px; /* A részletes táblázat sosem lehet keskenyebb, mint ez */
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            
+        }
+
+        /* Összesítő tábla külön kezelése (kisebb) */
+        .summary-table {
+            min-width: 500px; 
+        }
+        
         .admin-table th, .admin-table td {
             padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid #f0f0f0;
+            white-space: nowrap; /* Megakadályozza a cellán belüli törést */
         }
 
         .admin-table th {
@@ -178,14 +226,9 @@
             background-color: var(--color-success);
         }
         
-        /* Részletes Napló Stílusa (VISSZAÁLLÍTVA) */
-        #detailedLogSection h2 {
-            color: var(--color-primary);
-            font-weight: 500;
-        }
-        
+        /* Részletes Napló Fejléc Stílus */
         .detailed-table th {
-            background-color: var(--color-primary-light); /* Eredeti, világosabb zöld */
+            background-color: var(--color-primary-light); 
             color: var(--color-white);
         }
         
@@ -194,8 +237,7 @@
             font-weight: 500;
         }
 
-
-        /* MODÁLIS STÍLUSOK (VÁLTOZATLAN) */
+        /* MODÁLIS ABLAK STÍLUSOK (megtartva) */
         .modal {
             display: none; 
             position: fixed; 
@@ -206,8 +248,9 @@
             height: 100%; 
             overflow: auto; 
             background-color: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(2px);
         }
-
+        
         .modal-content {
             background-color: var(--color-white);
             margin: 15% auto; 
@@ -218,8 +261,14 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             text-align: center;
+            animation: fadeIn 0.3s;
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .modal-content h2 {
             color: var(--color-error);
             font-weight: 700;
@@ -264,6 +313,20 @@
         #modalCancel:hover {
             background-color: #dee2e6;
         }
+        
+        /* MOBIL JAVÍTÁS: Konténer padding */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                margin: 20% auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -304,18 +367,20 @@
     </div>
 
     <h2>Összesített Munkaórák</h2>
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Dolgozó</th>
-                <th>Egység</th>
-                <th>Státusz</th>
-                <th>Össz. idő (óra)</th>
-            </tr>
-        </thead>
-        <tbody id="adminTableBody">
+    <div class="table-wrapper">
+        <table class="admin-table summary-table">
+            <thead>
+                <tr>
+                    <th>Dolgozó</th>
+                    <th>Egység</th>
+                    <th>Státusz</th>
+                    <th>Össz. idő (óra)</th>
+                </tr>
+            </thead>
+            <tbody id="adminTableBody">
             </tbody>
-    </table>
+        </table>
+    </div>
     
     <div id="detailedLogSection">
         <div class="log-header">
@@ -330,21 +395,24 @@
         </div>
         
         <p id="logFilterStatus"></p>
-        <table class="admin-table detailed-table">
-            <thead>
-                <tr>
-                    <th>Dátum</th>
-                    <th>Dolgozó</th>
-                    <th>Egység</th>
-                    <th>Bejelentkezés ideje</th>
-                    <th>Kijelentkezés ideje</th>
-                    <th>Munkamenet Idő</th>
-                    <th>Státusz</th>
-                </tr>
-            </thead>
-            <tbody id="detailedLogBody">
-            </tbody>
-        </table>
+        
+        <div class="table-wrapper">
+            <table class="admin-table detailed-table">
+                <thead>
+                    <tr>
+                        <th>Dátum</th>
+                        <th>Dolgozó</th>
+                        <th>Egység</th>
+                        <th>Bejelentkezés ideje</th>
+                        <th>Kijelentkezés ideje</th>
+                        <th>Munkamenet Idő</th>
+                        <th>Státusz</th>
+                    </tr>
+                </thead>
+                <tbody id="detailedLogBody">
+                </tbody>
+            </table>
+        </div>
     </div>
     
     <p style="margin-top: 20px; color: var(--color-error); font-weight: 500;" id="adminStatusMessage"></p>
@@ -400,7 +468,7 @@
     let currentFilteredLog = []; 
 
 
-    // --- SEGÉDFÜGGVÉNYEK ---
+    // --- SEGÉDFÜGGVÉNYEK (VÁLTOZATLAN) ---
     
     /**
      * Dátum formázása: YYYY.MM.DD. és Idő formázása: HH:MM:SS
@@ -504,7 +572,7 @@
     }
 
 
-    // --- CSV EXPORT FUNKCIÓ ---
+    // --- CSV EXPORT FUNKCIÓ (VÁLTOZATLAN) ---
 
     function exportDetailedLogToCSV() {
         if (currentFilteredLog.length === 0) {
@@ -539,8 +607,7 @@
             
             const status = log.checkOut === null ? "Folyamatban" : "Befejezett";
 
-            // A speciális karaktereket (pl. vessző a neveknél) " " (idézőjellel) kezeljük, de itt a magyar pontosvessző (;) a szeparátor. 
-            // Az idézőjeles bekezelés segít az Excelnek a helyes értelmezésben, de mivel csak nevek vannak, a join(';') egyszerűbb.
+            // A sor celláinak összefűzése pontosvesszővel (CSV formátum)
             const row = [
                 log.employeeName,
                 log.unitName,
@@ -552,7 +619,6 @@
                 status
             ];
             
-            // A sor celláinak összefűzése pontosvesszővel (CSV formátum)
             csvRows.push(row.join(';'));
         });
 
@@ -589,7 +655,7 @@
         document.getElementById('endDate').value = today;
     }
     
-    // --- ADMIN PANEL FŐ LOGIKA (Dátumszűrő korrekcióval) ---
+    // --- ADMIN PANEL FŐ LOGIKA (VÁLTOZATLAN) ---
 
     function updateAdminPanel() {
         const selectedUnitCode = document.getElementById('adminCitySelect').value;
@@ -618,7 +684,7 @@
         displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
     }
     
-    // --- 2. ÖSSZESÍTŐ TÁBLA LOGIKÁJA ---
+    // --- 2. ÖSSZESÍTŐ TÁBLA LOGIKÁJA (VÁLTOZATLAN) ---
     function updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
         const tableBody = document.getElementById('adminTableBody');
         tableBody.innerHTML = ''; 
@@ -680,7 +746,7 @@
     }
 
 
-    // --- 3. RÉSZLETES NAPLÓ LOGIKÁJA ---
+    // --- 3. RÉSZLETES NAPLÓ LOGIKÁJA (VÁLTOZATLAN) ---
     function displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
         const detailedLogBody = document.getElementById('detailedLogBody');
         detailedLogBody.innerHTML = '';
@@ -790,6 +856,3 @@
 
 </body>
 </html>
-
-
-
