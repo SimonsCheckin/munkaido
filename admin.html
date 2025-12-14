@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ADMIN STÍLUSOK */
+        /* A STÍLUSOK VÁLTOZATLANOK (RESZPONZÍV KIEGÉSZÍTÉSSEL) */
         :root {
             --color-primary: #1e7e34; 
             --color-background: #f8f9fa; 
@@ -25,7 +25,7 @@
         body { 
             font-family: 'Roboto', sans-serif; 
             margin: 0; 
-            padding: 20px; /* Alap padding csökkentve */
+            padding: 20px; 
             background-color: var(--color-background);
             color: var(--color-text-dark);
         }
@@ -50,7 +50,7 @@
             display: flex;
             justify-content: space-between; 
             align-items: center;
-            flex-wrap: wrap; /* Mobilon engedi a törést */
+            flex-wrap: wrap;
         }
         
         h2 {
@@ -59,7 +59,6 @@
             margin-bottom: 15px;
         }
 
-        /* Szűrési vezérlő stílusa */
         .filter-control {
             margin-top: 15px; 
             margin-bottom: 20px;
@@ -77,13 +76,11 @@
             min-width: 200px;
         }
         
-        /* MOBIL JAVÍTÁS: Szűrők 100%-os szélessége */
         @media (max-width: 600px) {
             .filter-group {
                 min-width: 100%;
             }
         }
-
 
         .filter-control label {
             font-weight: 500;
@@ -103,7 +100,6 @@
             box-sizing: border-box;
         }
         
-        /* CÍM ÉS EXPORT GOMB TÁROLÓ */
         .log-header {
             display: flex;
             justify-content: space-between;
@@ -111,10 +107,9 @@
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #e9ecef;
-            flex-wrap: wrap; /* Mobilon engedi a törést */
+            flex-wrap: wrap;
         }
         
-        /* GOMB STÍLUSOK */
         #exportCsvButton, #resetHoursButton {
             padding: 10px 15px;
             border: none;
@@ -126,7 +121,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            margin-top: 10px; /* Mobilon szeparálás */
+            margin-top: 10px; 
         }
 
         #exportCsvButton {
@@ -147,7 +142,6 @@
             background-color: #c82333; 
         }
 
-        /* Mobilon a cím mellett a gombok egymás alatt */
         @media (max-width: 700px) {
              h1 {
                  flex-direction: column;
@@ -171,25 +165,23 @@
         }
         
         
-        /* A TÁBLÁZATOK BEÁLLÍTÁSA RESZPONZÍV GÖRGETÉSRE */
         .table-wrapper {
             width: 100%;
-            overflow-x: auto; /* Ez a lényeg! */
+            overflow-x: auto; 
             -webkit-overflow-scrolling: touch;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* árnyék a görgetéshez */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
             border-radius: 8px;
             margin-top: 20px;
         }
 
         .admin-table {
-            min-width: 800px; /* A részletes táblázat sosem lehet keskenyebb, mint ez */
+            min-width: 800px; 
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
             
         }
 
-        /* Összesítő tábla külön kezelése (kisebb) */
         .summary-table {
             min-width: 500px; 
         }
@@ -198,7 +190,7 @@
             padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid #f0f0f0;
-            white-space: nowrap; /* Megakadályozza a cellán belüli törést */
+            white-space: nowrap; 
         }
 
         .admin-table th {
@@ -226,7 +218,6 @@
             background-color: var(--color-success);
         }
         
-        /* Részletes Napló Fejléc Stílus */
         .detailed-table th {
             background-color: var(--color-primary-light); 
             color: var(--color-white);
@@ -237,7 +228,6 @@
             font-weight: 500;
         }
 
-        /* MODÁLIS ABLAK STÍLUSOK (megtartva) */
         .modal {
             display: none; 
             position: fixed; 
@@ -250,7 +240,7 @@
             background-color: rgba(0,0,0,0.4); 
             backdrop-filter: blur(2px);
         }
-        
+
         .modal-content {
             background-color: var(--color-white);
             margin: 15% auto; 
@@ -314,7 +304,6 @@
             background-color: #dee2e6;
         }
         
-        /* MOBIL JAVÍTÁS: Konténer padding */
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -328,7 +317,31 @@
             }
         }
     </style>
-</head>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // !!! FONTOS: IDE ÍRD BE A SAJÁT FIREBASE KONFIGURÁCIÓDAT !!!
+        const FIREBASE_CONFIG = {
+            apiKey: "IDE_JON_AZ_API_KULCS",
+            authDomain: "IDE_JON_AZ_AUTH_DOMAIN",
+            projectId: "IDE_JON_A_PROJECT_ID",
+            storageBucket: "IDE_JON_A_STORAGE_BUCKET",
+            messagingSenderId: "IDE_JON_A_MESSAGING_ID",
+            appId: "IDE_JON_AZ_APP_ID"
+        };
+        
+        let db;
+        try {
+            const app = firebase.initializeApp(FIREBASE_CONFIG);
+            db = app.firestore();
+        } catch(error) {
+            console.error("Firebase inicializálási hiba:", error);
+            alert("Hiba: Az admin panel nem tud csatlakozni az adatbázishoz. Kérjük, ellenőrizze a Firebase konfigurációt!");
+        }
+    </script>
+    </head>
 <body>
 
 <div class="container">
@@ -464,27 +477,20 @@
         return map;
     }, {});
     
-    // Ideiglenes tároló a szűrt adatoknak az exportáláshoz
     let currentFilteredLog = []; 
 
 
     // --- SEGÉDFÜGGVÉNYEK (VÁLTOZATLAN) ---
-    
-    /**
-     * Dátum formázása: YYYY.MM.DD. és Idő formázása: HH:MM:SS
-     */
     function formatDateTime(isoString) {
         if (!isoString) return ['---', '---'];
         const date = new Date(isoString);
         
-        // Dátum rész YYYY.MM.DD.
         const datePart = date.toLocaleDateString('hu-HU', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
         });
         
-        // Idő rész HH:MM:SS
         const timePart = date.toLocaleTimeString('hu-HU', {
             hour: '2-digit',
             minute: '2-digit',
@@ -495,9 +501,6 @@
         return [datePart, timePart];
     }
     
-    /**
-     * Időtartam formázása óra, percben
-     */
     function formatDuration(ms) {
         if (ms === null) return 'N/A';
         const totalSeconds = Math.floor(ms / 1000);
@@ -509,27 +512,18 @@
         return `${hours} óra ${pad(minutes)} perc`;
     }
     
-    /**
-     * Időtartam formázása decimális órában
-     */
     function formatDurationInHours(ms) {
         if (ms === null) return '0.00';
         const totalHours = ms / 3600000;
-        return totalHours.toFixed(2).replace('.', ','); // CSV-hez magyar formátum (vessző)
+        return totalHours.toFixed(2).replace('.', ','); 
     }
 
-
-    /**
-     * Segédfüggvény: Dátum ellenőrzése a szűrő alapján
-     */
     function isDateBetween(dateIsoString, startFilter, endFilter) {
         if (!startFilter && !endFilter) return true; 
 
         const logDate = new Date(dateIsoString);
-        // Log dátum egyszerűsítése helyi éjfélre (pl. 2025-12-14 00:00:00 CET)
         const logDateOnly = new Date(logDate.getFullYear(), logDate.getMonth(), logDate.getDate()); 
         
-        // Szűrő feltételek ellenőrzése
         let passedStart = true;
         if (startFilter) {
             passedStart = logDateOnly >= startFilter;
@@ -554,48 +548,63 @@
     function closeResetModal() {
         resetModal.style.display = 'none';
     }
+    
+    // FIREBASE-RE ÁTÍRVA: MINDEN DOKUMENTUM TÖRLÉSE KÉT KÜLÖN GYŰJTEMÉNYBŐL
+    async function performReset() {
+        if (!db) return;
+        
+        const deleteCollection = async (collectionRef) => {
+            const snapshot = await collectionRef.get();
+            const batch = db.batch();
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            await batch.commit();
+        };
 
-    function performReset() {
-        localStorage.setItem('timeLog', JSON.stringify([]));
-        localStorage.setItem('activeSessions', JSON.stringify({})); 
-
-        updateAdminPanel();
+        try {
+            // Törlés a 'timeLog' gyűjteményből
+            await deleteCollection(db.collection('timeLog'));
             
-        const statusDiv = document.getElementById('adminStatusMessage');
-        statusDiv.textContent = "✅ Sikeresen törölve! Minden dolgozó munkaórája 0-ra lett állítva, az aktív munkamenetek lezárultak.";
-            
-        setTimeout(() => {
-            statusDiv.textContent = '';
-        }, 5000);
+            // Törlés az 'activeSessions' gyűjteményből
+            await deleteCollection(db.collection('activeSessions'));
 
-        closeResetModal();
+            updateAdminPanel();
+            
+            const statusDiv = document.getElementById('adminStatusMessage');
+            statusDiv.textContent = "✅ Sikeresen törölve! Minden dolgozó munkaórája 0-ra lett állítva, az aktív munkamenetek lezárultak.";
+                
+            setTimeout(() => {
+                statusDiv.textContent = '';
+            }, 5000);
+
+            closeResetModal();
+        } catch (error) {
+            console.error("Adatbázis törlési hiba:", error);
+            document.getElementById('adminStatusMessage').textContent = "HIBA: Adatbázis törlés sikertelen!";
+        }
     }
 
 
     // --- CSV EXPORT FUNKCIÓ (VÁLTOZATLAN) ---
-
     function exportDetailedLogToCSV() {
         if (currentFilteredLog.length === 0) {
             alert("Nincs exportálható adat a kiválasztott szűrőknek megfelelően.");
             return;
         }
         
-        // Fejléc beállítása (Magyar nevekkel, pontos vesszővel)
         const headers = [
             "Dolgozó Neve",
             "Egység",
             "Dátum",
-            "Bejelentkezés Ideje (HH:MM:SS)",
-            "Kijelentkezés Ideje (HH:MM:SS)",
-            "Munkamenet Idő (Óra:Perc)",
-            "Munkamenet Idő (Decimális Óra)",
+            "Bejelentkezés Ideje",
+            "Kijelentkezés Ideje",
+            "Munkamenet Idő",
+            "Munkamenet Idő",
             "Státusz"
         ];
 
-        // Sorok létrehozása
         const csvRows = [];
-        
-        // Hozzáadjuk a fejlécet
         csvRows.push(headers.join(';')); 
 
         currentFilteredLog.forEach(log => {
@@ -607,7 +616,6 @@
             
             const status = log.checkOut === null ? "Folyamatban" : "Befejezett";
 
-            // A sor celláinak összefűzése pontosvesszővel (CSV formátum)
             const row = [
                 log.employeeName,
                 log.unitName,
@@ -622,10 +630,8 @@
             csvRows.push(row.join(';'));
         });
 
-        // 2. Fájl letöltés
         const csvString = csvRows.join('\n');
         
-        // Blob létrehozása a magyar ékezetes karakterek támogatásához (UTF-8 BOM)
         const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
         const blob = new Blob([bom, csvString], { type: 'text/csv;charset=utf-8;' });
         
@@ -655,19 +661,17 @@
         document.getElementById('endDate').value = today;
     }
     
-    // --- ADMIN PANEL FŐ LOGIKA (VÁLTOZATLAN) ---
+    // --- ADMIN PANEL FŐ LOGIKA: ASZINKRON ADATLEKÉRÉS A FIREBASE-BŐL ---
 
-    function updateAdminPanel() {
+    // A funkció async lett!
+    async function updateAdminPanel() {
+        if (!db) return; // Megáll, ha nincs kapcsolat
+
         const selectedUnitCode = document.getElementById('adminCitySelect').value;
         
-        const timeLog = JSON.parse(localStorage.getItem('timeLog')) || [];
-        const activeSessions = JSON.parse(localStorage.getItem('activeSessions')) || {}; 
-        
-        // DÁTUM SZŰRŐ ÉRTÉKEINEK OLVASÁSA
         let startDateFilter = document.getElementById('startDate').value;
         let endDateFilter = document.getElementById('endDate').value;
         
-        // Dátum konvertálása Helyi időzóna szerinti éjfélre (Javítás a korábbi problémára)
         let startFilter = null;
         if (startDateFilter) {
             const parts = startDateFilter.split('-'); 
@@ -679,12 +683,26 @@
             const parts = endDateFilter.split('-'); 
             endFilter = new Date(parts[0], parts[1] - 1, parts[2]); 
         }
-
-        updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
-        displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
+        
+        try {
+            // FIREBASE LEKÉRÉS: Aktív és Befejezett munkamenetek egyaránt
+            const timeLogSnapshot = await db.collection('timeLog').get();
+            const activeSessionsSnapshot = await db.collection('activeSessions').get();
+            
+            // Konvertálás egyszerű JavaScript tömbbé a feldolgozáshoz
+            const timeLog = timeLogSnapshot.docs.map(doc => doc.data());
+            const activeSessions = activeSessionsSnapshot.docs.map(doc => doc.data());
+            
+            updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
+            displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter);
+            
+        } catch(error) {
+            console.error("Adatlekérési hiba a Firebase-ből:", error);
+            document.getElementById('adminStatusMessage').textContent = "HIBA: Nem sikerült lekérni az adatokat az adatbázisból.";
+        }
     }
     
-    // --- 2. ÖSSZESÍTŐ TÁBLA LOGIKÁJA (VÁLTOZATLAN) ---
+    // --- 2. ÖSSZESÍTŐ TÁBLA LOGIKÁJA (FIELDOLGOZÁS) ---
     function updateSummaryTable(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
         const tableBody = document.getElementById('adminTableBody');
         tableBody.innerHTML = ''; 
@@ -712,18 +730,20 @@
         });
 
         const now = new Date().getTime();
-        for (const employeeId in activeSessions) {
+        activeSessions.forEach(session => {
+            const employeeId = session.employeeId;
+            
             if (employeeSummary[employeeId]) {
-                const session = activeSessions[employeeId]; 
                 
-                if (isDateBetween(new Date(session.checkInTime).toISOString(), startFilter, endFilter)) {
+                if (isDateBetween(session.checkInTimeISO, startFilter, endFilter)) {
                     
                     employeeSummary[employeeId].isCheckedIn = true;
+                    // session.checkInTime is number (timestamp)
                     const ongoingDuration = now - session.checkInTime; 
                     employeeSummary[employeeId].totalDurationMs += ongoingDuration;
                 }
             }
-        }
+        });
 
         for (const id in employeeSummary) {
             const summary = employeeSummary[id];
@@ -746,7 +766,7 @@
     }
 
 
-    // --- 3. RÉSZLETES NAPLÓ LOGIKÁJA (VÁLTOZATLAN) ---
+    // --- 3. RÉSZLETES NAPLÓ LOGIKÁJA (FIELDOLGOZÁS) ---
     function displayDetailedLog(timeLog, activeSessions, selectedUnitCode, startFilter, endFilter) {
         const detailedLogBody = document.getElementById('detailedLogBody');
         detailedLogBody.innerHTML = '';
@@ -775,14 +795,13 @@
         });
         
         // 2. Aktív munkamenetek hozzáadása
-        for (const employeeId in activeSessions) {
-             const employee = EMPLOYEE_MAP[employeeId];
+        activeSessions.forEach(session => {
+             const employee = EMPLOYEE_MAP[session.employeeId];
              
              if (employee && 
                  (selectedUnitCode === 'ALL' || employee.unit === selectedUnitCode) &&
-                 isDateBetween(new Date(activeSessions[employeeId].checkInTime).toISOString(), startFilter, endFilter)) {
+                 isDateBetween(session.checkInTimeISO, startFilter, endFilter)) {
                 
-                const session = activeSessions[employeeId];
                 const unitName = RESTAURANT_LOCATIONS[employee.unit].name;
                 
                 const durationMs = now - session.checkInTime;
@@ -790,12 +809,12 @@
                 allLogs.push({
                     employeeName: employee.name,
                     unitName: unitName,
-                    checkIn: new Date(session.checkInTime).toISOString(),
+                    checkIn: session.checkInTimeISO,
                     checkOut: null, 
                     durationMs: durationMs
                 });
             }
-        }
+        });
         
         // 3. Rendezés
         allLogs.sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn));
@@ -821,23 +840,13 @@
             const [dateIn, timeIn] = formatDateTime(log.checkIn);
             const [dateOut, timeOut] = formatDateTime(log.checkOut);
             
-            // 1. Dátum
             row.insertCell().textContent = dateIn;
-            
-            // 2. Dolgozó és Egység
             row.insertCell().textContent = log.employeeName;
             row.insertCell().textContent = log.unitName;
-            
-            // 3. Bejelentkezés ideje (HH:MM:SS)
             row.insertCell().textContent = timeIn;
-
-            // 4. Kijelentkezés ideje (HH:MM:SS)
             row.insertCell().textContent = isFinished ? timeOut : 'AKTÍV / ---';
-
-            // 5. Munkamenet Idő
             row.insertCell().textContent = formatDuration(log.durationMs);
             
-            // 6. Státusz
             row.insertCell().innerHTML = isFinished 
                 ? `<span style="color: var(--color-success);">Befejezett</span>`
                 : `<span style="color: #ff9800; font-weight: 500;">Folyamatban</span>`;
