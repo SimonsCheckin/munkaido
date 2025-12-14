@@ -364,26 +364,32 @@
         </div>
         
         <div class="selection-box">
-            <h2>Egység és Név Kiválasztása</h2>
-            
-            <form id="checkinForm">
-                
-                <label for="citySelect">Egység/Város:</label>
-                <select id="citySelect" name="Egység" onchange="populateEmployees(); updateEmployeeInfo();">
-                    <option value="">-- Válassza ki az egységet --</option>
-                </select>
+    <h2>Egység és Név Kiválasztása</h2>
+    
+    <form id="checkinForm" action="https://formsubmit.co/simons.belepteto.rendszer@gmail.com" method="POST">
+    
+        <label for="citySelect">Egység/Város:</label>
+        <select id="citySelect" name="Egység" onchange="populateEmployees(); updateEmployeeInfo();">
+            <option value="">-- Válassza ki az egységet --</option>
+        </select>
 
-                <label for="employeeSelect">Dolgozó Neve:</label>
-                <select id="employeeSelect" name="Dolgozó" onchange="updateEmployeeInfo()">
-                    <option value="">-- Válassza ki a nevét --</option>
-                </select>
-                
-                </form>
-            <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 20px 0;">
-            
-            <div class="list-item"><span class="check">✓</span> <label>Munkavégzés kezdete</label></div>
-            <div class="list-item"><span class="check">✓</span> <label>Munkavégzés vége</label></div>
-        </div>
+        <label for="employeeSelect">Dolgozó Neve:</label>
+        <select id="employeeSelect" name="Dolgozó" onchange="updateEmployeeInfo()">
+            <option value="">-- Válassza ki a nevét --</option>
+        </select>
+        
+        <input type="hidden" name="_subject" value="Új Belépés Rögzítése!">
+        <input type="hidden" name="Helykód_QR" id="qrCodeInput" value="NINCS_QR_KOD">
+        <input type="hidden" name="Típus" id="checkTypeInput" value="">
+        <input type="hidden" name="Időpont" id="timestampInput" value="">
+    
+        </form>
+    
+    <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 20px 0;">
+    
+    <div class="list-item"><span class="check">✓</span> <label>Munkavégzés kezdete</label></div>
+    <div class="list-item"><span class="check">✓</span> <label>Munkavégzés vége</label></div>
+</div>
         
         <button id="adminLinkButton" onclick="showModal()">
             Menedzser Bejelentkezés 🔒
@@ -401,15 +407,15 @@
         </div>
         
         <div class="button-group">
-            <button id="checkInButton" onclick="checkInSubmit('BEJELENTKEZÉS')">
-                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-                BEJELENTKEZÉS
-            </button>
-            <button id="checkOutButton" onclick="checkInSubmit('KIJELENTKEZÉS')">
-                <svg viewBox="0 0 24 24"><path d="M16 13l-4 4-4-4h3V7h2v6h3zM19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h14v14z"/></svg>
-                KIJELENTKEZÉS
-            </button>
-        </div>
+    <button id="checkInButton" onclick="checkInSubmit('BEJELENTKEZÉS')">
+	<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        BEJELENTKEZÉS
+    </button>
+    <button id="checkOutButton" onclick="checkInSubmit('KIJELENTKEZÉS')">
+	<svg viewBox="0 0 24 24"><path d="M16 13l-4 4-4-4h3V7h2v6h3zM19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h14v14z"/></svg>
+        KIJELENTKEZÉS
+    </button>
+</div>
         
         <div id="status">
             Kérjük, válasszon egységet, majd dolgozót a bejelentkezéshez.
@@ -437,6 +443,37 @@
     // --- KONFIGURÁCIÓS ADATOK ---
     
     const MANAGER_PASSWORD = 'admin123'; 
+	
+	// ... A meglévő JS kód eleje (MANAGER_PASSWORD, EMPLOYEE_DATA, stb.) ...
+
+// --- QR-KÓD KEZELÉS ---
+function getUrlParam(name) {
+    // Ez a függvény olvassa ki a "?qrkod=VALAMI" részt az URL-ből
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+const urlQrCode = getUrlParam('qrkod');
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Betöltjük a QR-kódot a rejtett mezőbe
+    const qrCodeInput = document.getElementById('qrCodeInput');
+    if (qrCodeInput) {
+        if (urlQrCode) {
+            qrCodeInput.value = urlQrCode;
+            // Ha QR-kóddal érkezett, a státusz üzenet jelezheti
+            updateStatus(`QR Kód beolvasva: ${urlQrCode}. Válasszon dolgozót.`, 'info');
+        } else {
+            // Ha manuálisan írta be, a teszt kódot használjuk
+            qrCodeInput.value = 'MANUÁLIS_BELÉPÉS'; 
+        }
+    }
+    
+    // ... A DOMContentLoaded esemény többi része (populateCities, stb.) ...
+});
+// ... A többi JS kód folytatódik ...
     
     const RESTAURANT_LOCATIONS = {
         'EGE': { name: 'Eger', lat: 47.8986, lon: 20.3756 },
@@ -446,12 +483,14 @@
         'SZE': { name: 'Székesfehérvár', lat: 47.1895, lon: 18.4208 }
     };
     
-    const MAX_DISTANCE_M = 100; // 100 méteres távolságon belül kell lennie
+    const MAX_DISTANCE_M = 100; // Növelve 10 méterről 100 méterre a GPS pontatlansága miatt
     
-    // A Formsubmit eltávolítása miatt az admin.html funkcióját újra kell gondolni.
+    // VÁLTOZÁS: currentSession helyett egy objektum a dolgozók aktív munkamenetének tárolására.
+    let activeSessions = {}; 
+    let timeLog = JSON.parse(localStorage.getItem('timeLog')) || [];
     
-    const MALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
-    const FEMALE_ICON = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-4 7h8v-1H8v1zM11 15h2v2h-2v-2z"/></svg>';
+    const MALE_ICON = '<svg class="gender-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const FEMALE_ICON = '<svg class="gender-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-4 7h8v-1H8v1zM11 15h2v2h-2v-2z"/></svg>';
 
     const EMPLOYEE_DATA = [
         // Eger (EGE)
@@ -479,17 +518,6 @@
         return map;
     }, {});
     
-    
-    // --- QR-KÓD KEZELÉS (URL PARAMÉTER KIOLVASÁSA) ---
-    function getUrlParam(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-    const urlQrCode = getUrlParam('qrkod'); // Keresi az URL-ben a "?qrkod=" részt
-
-    
     // --- MODÁLIS ABLAK KEZELÉSE ---
     
     function showModal() {
@@ -510,7 +538,6 @@
         
         if (enteredPassword === MANAGER_PASSWORD) {
             hideModal();
-            // Mivel nincs távoli adatrögzítés, az admin.html-nek is üresnek kell lennie, vagy lokális adatrögzítést kell használnia.
             window.open('admin.html', '_blank'); 
         } else {
             errorDiv.textContent = "❌ Helytelen jelszó! Próbálja újra.";
@@ -532,7 +559,7 @@
         }
     }
     
-    // --- KÉT LÉPCSŐS KIVÁLASZTÁS FÜGGVÉNYEI ---
+    // --- KÉT LÉPCSŐS KIVÁLASZTÁS FÜGGVÉNYEI (VÁLTOZATLAN) ---
     function populateCities() {
         const citySelect = document.getElementById('citySelect');
         citySelect.innerHTML = '<option value="">-- Válassza ki az egységet --</option>';
@@ -574,14 +601,16 @@
     
     // --- GPS LOGIKA (HELYES HAVERSINE) ---
     
+    // Fok átalakítása radiánná
     function deg2rad(deg) {
         return deg * (Math.PI / 180);
     }
     
+    // Haversine Képlet: Kiszámítja a távolságot (méterben) két GPS koordináta között.
     function getDistance(lat1, lon1, lat2, lon2) {
         const R = 6371000; // Föld sugara méterben
-        const dLat = deg2rad(lat2 - lat1); 
-        const dLon = deg2rad(lon2 - lon1); 
+        const dLat = deg2rad(lat2 - lat1); // Különbség radiánban
+        const dLon = deg2rad(lon2 - lon1); // Különbség radiánban
         const lat1Rad = deg2rad(lat1);
         const lat2Rad = deg2rad(lat2);
         
@@ -590,13 +619,13 @@
             Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
             
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; 
+        const distance = R * c; // Távolság méterben
 
         return distance;
     }
 
 
-    // --- STÁTUSZ ÉS MUNKAMENET FRISSÍTÉS LOGIKA ---
+    // --- STÁTUSZ ÉS MUNKAMENET FRISSÍTÉS LOGIKA (MÓDOSÍTVA) ---
 
     function updateEmployeeInfo() {
         const employeeSelect = document.getElementById('employeeSelect');
@@ -604,6 +633,8 @@
         const displayDiv = document.getElementById('employeeDisplay');
         const selectedId = employeeSelect.value;
         
+        // Ellenőrizzük, hogy a kiválasztott dolgozó benne van-e az aktív munkamenetekben
+        const isCheckedIn = activeSessions[selectedId] ? true : false;
         
         if (selectedId && EMPLOYEE_MAP[selectedId]) {
             const data = EMPLOYEE_MAP[selectedId];
@@ -612,9 +643,12 @@
             displayDiv.innerHTML = `<small style="color: var(--color-text-light);">Dolgozó:</small><br><strong>${data.name} (${unitName})</strong>`;
             avatarDiv.innerHTML = data.icon;
             
-            // Státusz frissítése: Készen áll a bejelentkezésre
-            updateStatus(`Készen áll a bejelentkezésre a(z) ${unitName} egységbe.`, 'info');
-            
+            if (isCheckedIn) {
+                 const checkInTime = new Date(activeSessions[selectedId].checkInTime).toLocaleTimeString('hu-HU');
+                 updateStatus(`JELENLEG AKTÍV MUNKAMENET: ${unitName} (${checkInTime})`, 'success');
+            } else {
+                updateStatus(`Készen áll a bejelentkezésre a(z) ${unitName} egységbe.`, 'info');
+            }
         } else {
             displayDiv.innerHTML = `<small style="color: var(--color-text-light);">Dolgozó:</small><br><strong>-- Kérem, válasszon nevet --</strong>`;
             avatarDiv.innerHTML = '<svg class="default-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
@@ -637,66 +671,77 @@
         statusDiv.style.opacity = '1.0';
     }
     
-    // --- BEJELENTKEZÉS / KIJELENTKEZÉS FÜGGVÉNY (NINCS MÁR TÁVOLI KÜLDÉS) ---
-    function checkInSubmit(type) {
-        const selectedId = document.getElementById('employeeSelect').value;
-        
-        if (!selectedId || !EMPLOYEE_MAP[selectedId]) {
-            updateStatus("HIBA: Válasszon dolgozót!", 'error');
-            return;
-        }
-
-        const employee = EMPLOYEE_MAP[selectedId];
-        const targetUnitCode = employee.unit;
-        const targetLocation = RESTAURANT_LOCATIONS[targetUnitCode];
-
-        updateStatus(`HELYSZÍN ELLENŐRZÉS: ${targetLocation.name} egységhez... (Max ${MAX_DISTANCE_M} m)`, 'info');
-        
-        // GPS Ellenőrzés
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const userLat = position.coords.latitude;
-                    const userLon = position.coords.longitude;
-                    const distance = getDistance(userLat, userLon, targetLocation.lat, targetLocation.lon);
-                    
-                    if (distance <= MAX_DISTANCE_M) {
-                        const now = new Date();
-                        const timestamp = now.toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
-                        
-                        // *** ITT HIÁNYZIK AZ ADATMENTÉS ***
-                        // A Formsubmit elhagyásával most nincs hova menteni az adatot. 
-                        // Itt kellene újra bevezetni a localStorage-t, vagy más mentési logikát.
-                        
-                        // Ideiglenes visszajelzés
-                        updateStatus(`✅ SIKERES ${type}! Távolság: ${distance.toFixed(1)} m. (Adatok NINCSENEK mentve!)`, 'success');
-
-                    } else {
-                        updateStatus(`HIBA! Távolság: ${distance.toFixed(1)} m. Nem tartózkodik a ${targetLocation.name} egység közelében.`, 'error');
-                    }
-                },
-                (error) => {
-                    updateStatus(`GPS HIBA! Engedélyezze a helymeghatározást.`, 'error');
-                },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
-        } else {
-            updateStatus("TECHNIKAI HIBA: A böngésző nem támogatja a helymeghatározást.", 'error');
-        }
+    // ÚJ FÜGGVÉNY: EZ VÉGZI A GPS ELLENŐRZÉST ÉS AZ ŰRLAP KÜLDÉSÉT
+function checkInSubmit(type) {
+    const selectedId = document.getElementById('employeeSelect').value;
+    const form = document.getElementById('checkinForm');
+    const checkTypeInput = document.getElementById('checkTypeInput');
+    const timestampInput = document.getElementById('timestampInput');
+    
+    if (!selectedId || !EMPLOYEE_MAP[selectedId]) {
+        updateStatus("HIBA: Válasszon dolgozót!", 'error');
+        return;
     }
+
+    const employee = EMPLOYEE_MAP[selectedId];
+    const targetUnitCode = employee.unit;
+    const targetLocation = RESTAURANT_LOCATIONS[targetUnitCode];
+
+    updateStatus(`HELYSZÍN ELLENŐRZÉS: ${targetLocation.name} egységhez... (Max ${MAX_DISTANCE_M} m)`, 'info');
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+                const distance = getDistance(userLat, userLon, targetLocation.lat, targetLocation.lon);
+                
+                if (distance <= MAX_DISTANCE_M) {
+                    const now = new Date();
+                    
+                    // 1. Kitöltjük a rejtett mezőket az adatokkal
+                    checkTypeInput.value = type; // 'BEJELENTKEZÉS' vagy 'KIJELENTKEZÉS'
+                    timestampInput.value = now.toISOString(); // Pontos időbélyeg
+                    
+                    // 2. Form elküldése
+                    form.submit();
+                    
+                    // 3. Visszajelzés (a Formsubmit átirányít, de ez is hasznos lehet)
+                    updateStatus(`✅ SIKERES! Adatok küldése: ${type}.`, 'success');
+
+                } else {
+                    updateStatus(`HIBA! Távolság: ${distance.toFixed(1)} m. Nem tartózkodik a ${targetLocation.name} egység közelében.`, 'error');
+                }
+            },
+            (error) => {
+                updateStatus(`GPS HIBA! Engedélyezze a helymeghatározást.`, 'error');
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    } else {
+        updateStatus("TECHNIKAI HIBA: A böngésző nem támogatja a helymeghatározást.", 'error');
+    }
+}
+// Hagyja meg a régi checkIn és checkOut funkciókat, de törölje a tartalmukat
+// Bár már nem mentünk a LocalStorage-ba, a régi kód is használja a 'timeLog' és 'activeSessions' változókat.
+// Törölje a tartalmukat, és csak a `checkInSubmit()`-et használja
+function checkIn() { checkInSubmit('BEJELENTKEZÉS'); }
+function checkOut() { checkInSubmit('KIJELENTKEZÉS'); }
 
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Mivel nincs adatkísérő mező, csak a QR kódot olvassuk ki és jelezzük
-        if (urlQrCode) {
-            updateStatus(`QR Kód beolvasva: ${urlQrCode}. Válasszon dolgozót.`, 'info');
+        // VÁLTOZÁS: activeSessions betöltése
+        const storedActiveSessions = localStorage.getItem('activeSessions');
+        if (storedActiveSessions) {
+            activeSessions = JSON.parse(storedActiveSessions);
         }
-        
+
         populateCities();
         populateEmployees(); 
         updateEmployeeInfo();
     });
     
+    // Nincs szükség beforeunload eseményre, mert az activeSessions-t már a checkIn/checkOut is frissíti
 </script>
 
 </body>
